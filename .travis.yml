@@ -1,11 +1,5 @@
 language: python
 python:
   - 3.5
-install:
-  - pip install numpy
-  - pip install scipy
-  - pip install matplotlib
-  - pip install tensorflow
-  - pip install keras
-  - pip install gym
+install: pip install --user -r requirements.txt
 script: python main.py -env CartPole-v0 -eps 5

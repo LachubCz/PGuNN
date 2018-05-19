@@ -10,6 +10,7 @@ class Network:
     """
     class for making neural networks
     """
+    @staticmethod
     def make_basic_model(state_size, action_size, learning_rate):
         """
         basic architecture of neural network

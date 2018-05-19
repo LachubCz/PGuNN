@@ -179,4 +179,5 @@ def main():
     gaussian_graph(scores, episodes_numbers, "{}-gaussian_graph.png" .format(task.name))
     combined_graph(scores, episodes_numbers, "{}-combined_graph.png" .format(task.name))
 
-main()
+if __name__ == "__main__":
+    main()
