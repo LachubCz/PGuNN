@@ -1,2 +1,2 @@
-# PlayingGamesUsingNeuralNetworks
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a7a8e07cf66f47f7abeef7efcdea9cb7)](https://app.codacy.com/app/LachubCz/PlayingGamesUsingNeuralNetworks?utm_source=github.com&utm_medium=referral&utm_content=LachubCz/PlayingGamesUsingNeuralNetworks&utm_campaign=badger)
+# PGuNN - Playing Games using Neural Networks
+[![Build Status](https://travis-ci.org/LachubCz/PlayingGamesUsingNeuralNetworks.svg?branch=master)](https://travis-ci.org/LachubCz/PlayingGamesUsingNeuralNetworks)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a7a8e07cf66f47f7abeef7efcdea9cb7)](https://app.codacy.com/app/LachubCz/PlayingGamesUsingNeuralNetworks?utm_source=github.com&utm_medium=referral&utm_content=LachubCz/PlayingGamesUsingNeuralNetworks&utm_campaign=badger)
