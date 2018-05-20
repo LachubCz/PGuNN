@@ -6,7 +6,6 @@ import os
 import sys
 import os.path
 import argparse
-import scipy
 import warnings
 warnings.simplefilter('ignore', FutureWarning)
 import numpy as np
@@ -19,27 +18,26 @@ from task import Task
 from visualization import combined_graph
 from playing import Playing as pl
 from playing import engineer_img
-from agent import Agent
 
 def err_print(*args, **kwargs):
     """
     method for printing to stderr
     """
     print(*args, file=sys.stderr, **kwargs)
-    
+
 def get_args():
     """
     method for parsing of arguments
     """
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-init", action="store_true", default=False, 
+    parser.add_argument("-init", action="store_true", default=False,
                         help="init replay memory with random agent observations")
-    parser.add_argument("-mem", action="store", dest="memory", choices=["basic", "prioritized"], 
+    parser.add_argument("-mem", action="store", dest="memory", choices=["basic", "prioritized"],
                         default="basic", help="type of memory")
-    parser.add_argument("-net", action="store", dest="network", choices=["basic", "dueling"], 
+    parser.add_argument("-net", action="store", dest="network", choices=["basic", "dueling"],
                         default="basic", help="type of neural network architecture")
-    parser.add_argument("-alg", action="store", dest="algorithm", choices=["DQN", "DQN+TN", "DDQN"], 
+    parser.add_argument("-alg", action="store", dest="algorithm", choices=["DQN", "DQN+TN", "DDQN"],
                         default="DQN", help="type of algorithm")
     parser.add_argument("-env", action="store", dest="environment", required=True,
                         choices=["CartPole-v0", "CartPole-v1", "MountainCar-v0", "Acrobot-v1", "2048-v0",
@@ -49,7 +47,7 @@ def get_args():
     parser.add_argument("-eps", action="store", dest="episodes", type=int, required=True,
                         help="number of training episodes")
     parser.add_argument("-mdl", action="store", dest="model", help="name of file which contains already trained model to load")
-    parser.add_argument("-pu", action="store", dest="process_unit", choices=["CPU", "GPU"], default="CPU", 
+    parser.add_argument("-pu", action="store", dest="process_unit", choices=["CPU", "GPU"], default="CPU",
                         help="script will run on this processing unit")
     parser.add_argument("-vids", action="store_true", default=False,
                         help="script will record videos using gym.wrappers")
@@ -60,7 +58,7 @@ def get_args():
     parser.add_argument("-num_of_frames", action="store", dest="num_of_frames", type=int, default=1, choices=[1, 2, 3, 4],
                         help="Number of frames to process as a information of state.")
     parser.add_argument("-mode", action="store", dest="mode", required=True,
-                        choices=["train", "test", "render"], default="train", 
+                        choices=["train", "test", "render"], default="train",
                         help="application mode")
 
     args = parser.parse_args()
@@ -114,7 +112,7 @@ def train(task, normalize_score=True):
         state = task.env.reset()
         last_state = state
 
-        if task.type == "text": 
+        if task.type == "text":
             state = state / 16384
         elif task.type == "ram":
             state = state / 255
@@ -135,7 +133,7 @@ def train(task, normalize_score=True):
 
         for t in range(task.max_steps):
             action = task.agent.get_action(state, epsilon=True)
-            next_state, reward, done, info = task.env.step(action)
+            next_state, reward, done, _ = task.env.step(action)
 
             true_score = true_score + reward
 
@@ -195,11 +193,11 @@ def train(task, normalize_score=True):
                 if task.name == "2048-v0":
                     highest.append(task.env.unwrapped.highest())
 
-                    print("Episode: {}/{}, Steps: {}, Memory: {}, Epsilon: {:.2}, Moves in episode: {}, Highest: {}, Normalized score: {:.4}, True score: {}" 
+                    print("Episode: {}/{}, Steps: {}, Memory: {}, Epsilon: {:.2}, Moves in episode: {}, Highest: {}, Normalized score: {:.4}, True score: {}"
                           .format(eps, task.args.episodes-1, steps, len(task.agent.memory) if task.agent.memory_type == "basic" else task.agent.memory.length,
                                   task.agent.current_epsilon, moves, task.env.unwrapped.highest(), float(normalized_score), true_score), end="")
                 else:
-                    print("Episode: {}/{}, Steps: {}, Memory: {}, Epsilon: {:.2}, Moves in episode: {}, Normalized score: {}, True score: {}" 
+                    print("Episode: {}/{}, Steps: {}, Memory: {}, Epsilon: {:.2}, Moves in episode: {}, Normalized score: {}, True score: {}"
                           .format(eps, task.args.episodes-1, steps, len(task.agent.memory) if task.agent.memory_type == "basic" else task.agent.memory.length,
                                   task.agent.current_epsilon, moves, normalized_score, true_score), end="")
                 if task.name == "2048-v0":
@@ -224,7 +222,7 @@ def main():
     if args.process_unit == "CPU":
         config = tf.ConfigProto(
             device_count={'CPU' : 1, 'GPU' : 0},
-            intra_op_parallelism_threads=1, 
+            intra_op_parallelism_threads=1,
             inter_op_parallelism_threads=1)
         set_session(tf.Session(config=config))
     else:

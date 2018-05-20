@@ -42,13 +42,13 @@ class Memory:
 
     def get_observation(self, index, p):
         """
-        method returns memory (observation) from specific range 
+        method returns memory (observation) from specific range
         """
         left = 2 * index + 1
 
         if left >= len(self.priority_tree):
             return (index, self.observation_tree[index - self.capacity + 1])
-        
+
         if p <= self.priority_tree[left]:
             return self.get_observation(left, p)
         else:
@@ -65,7 +65,7 @@ class Memory:
 
     def add_observation(self, observation, obs_error):
         """
-        method adds new observation (memory) into replay memory 
+        method adds new observation (memory) into replay memory
         """
         self.observation_tree[self.nw_elem_idx] = observation
         

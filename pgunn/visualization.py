@@ -39,7 +39,7 @@ def get_name(graph_name):
             i+=1
     else:
         graph_name = graph_name + ".pdf"
-        
+
     return graph_name
 
 def combined_graph(scores, episode_numbers, name, coordinates=None, linears=None, scatter=False):

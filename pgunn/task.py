@@ -5,7 +5,6 @@ for working with different environments
 import sys
 import gym
 import gym_2048
-from gym import wrappers    
 from agent import Agent
 from playing import Playing as pl
 from visualization import combined_graph
@@ -74,7 +73,7 @@ class Task:
         if score > self.solved_score:
             self.agent.save_model_weights("{}-solved.h5" .format(self.name))
             print("[Model was saved.]")
-            combined_graph(scores, episode_numbers, "{}_results" .format(self.name), 
+            combined_graph(scores, episode_numbers, "{}_results" .format(self.name),
                            [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
             print("[Graph of learning progress visualization was made.]")
             print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))

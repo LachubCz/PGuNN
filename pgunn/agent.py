@@ -136,7 +136,7 @@ class Agent:
 
         if np.random.rand() <= self.current_epsilon:
             return np.random.randint(0, self.action_size, size=1)[0]
-        else:            
+        else:
             q_value = self.model_net.predict(np.array([state]))
             return np.argmax(q_value)
 
@@ -277,14 +277,14 @@ class Agent:
         method loads weights to primary neural network
         """
         self.model_net.load_weights(name)
-        print("[Model was saved.]")
+        print("[Model has been loaded.]")
 
     def save_model_weights(self, name):
         """
         method saves weights of primary neural network
         """
         self.model_net.save_weights("./model-{}".format(name))
-        print("[Target model was saved.]")
+        print("[Model was saved.]")
 
     def load_target_weights(self, name):
         """
@@ -298,4 +298,4 @@ class Agent:
         method saves weights of target neural network
         """
         self.target_net.save_weights("./target-{}".format(name))
-        print("[Model has been loaded.]")
+        print("[Target model was saved.]")

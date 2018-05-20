@@ -109,7 +109,7 @@ class Network:
         """
         network_input = Input(shape=(self.state_size))
 
-        net = Conv2D(filters=32, kernel_size=(8, 8), strides=(4, 4), activation="relu", 
+        net = Conv2D(filters=32, kernel_size=(8, 8), strides=(4, 4), activation="relu",
                      kernel_initializer="he_uniform", data_format="channels_first")(network_input)
         net = Conv2D(filters=64, kernel_size=(4, 4), strides=(2, 2), activation="relu",
                      kernel_initializer="he_uniform")(net)
