@@ -285,6 +285,7 @@ def main():
         pl.agent_score_estimate(task, task.args.episodes, render=True, show_bar=True)
 
     K.clear_session()
+    print("[SUCCESSFUL RUN]")
 
 if __name__ == "__main__":
     main()
