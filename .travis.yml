@@ -1,5 +1,8 @@
 language: python
 python:
   - 3.5
-install: pip install -r requirements.txt
+install: 
+  - pip install -r requirements.txt
+  - cd gym-2048
+  - pip install -e .
 script: python tests.py
