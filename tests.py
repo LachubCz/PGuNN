@@ -13,3 +13,5 @@ class TestAppRuns(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+    os.system("python3 pgunn/main.py -mode test -env 2048-v0 -eps 25 -mdl models/2048-v0_basic.h5")
+    os.system("python3 pgunn/main.py -mode test -env Breakout-ram-v0 -eps 10 -mdl models/Breakout-ram-v0_basic.h5")
