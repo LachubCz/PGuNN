@@ -5,22 +5,12 @@ Application implements DQN, DQN with target network, DDQN, dueling architecture 
 
 **Supported environments:**
 
-* CartPole-v0
-* CartPole-v1
-* MountainCar-v0
-* Acrobot-v1
-* 2048-v0
-* SpaceInvaders-v0
-* SpaceInvaders-ram-v0
-* Breakout-v0
-* Breakout-ram-v0
-* BeamRider-v0
-* BeamRider-ram-v0
+CartPole-v0, CartPole-v1, MountainCar-v0, Acrobot-v1, 2048-v0, SpaceInvaders-v0, SpaceInvaders-ram-v0, Breakout-v0, Breakout-ram-v0, BeamRider-v0, BeamRider-ram-v0
 
 Usage
 -----
 ##### python3 main.py -env env -eps eps -mode mode [-alg alg] [-mem mem] [-net net] [-pu pu] [-mdl mdl] [-init] [-num_of_frames num_of_frames] [-save_f save_f] [-update_f update_f] [-vids]
-###### Parametry:
+###### Parameters:
 
     -env env           |   name of environment
     -eps eps           |   number of episodes
