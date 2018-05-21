@@ -8,7 +8,6 @@ import os.path
 import argparse
 import warnings
 warnings.simplefilter('ignore', FutureWarning)
-import numpy as np
 import tensorflow as tf
 from keras.backend.tensorflow_backend import set_session
 from keras import backend as K
@@ -120,7 +119,7 @@ def train(task, normalize_score=True):
         moves = 0
         wrong_moves = 0
 
-        for t in range(task.max_steps):
+        for _ in range(task.max_steps):
             action = task.agent.get_action(state, epsilon=True)
             next_state, reward, done, _ = task.env.step(action)
             true_score = true_score + reward

@@ -88,7 +88,7 @@ class Network:
         avg_action = Lambda(lambda x: K.mean(x, axis=1, keepdims=True))(action_values)
         concat_avg_action = Concatenate(axis=-1)([avg_action, avg_action])
 
-        for i in range(self.action_size-2):
+        for _ in range(self.action_size-2):
             value_function = Concatenate(axis=-1)([value_function, state_value])
             concat_avg_action = Concatenate(axis=-1)([concat_avg_action, avg_action])
 
@@ -133,7 +133,7 @@ class Network:
         """
         network_input = Input(shape=(self.state_size))
 
-        net = Conv2D(filters=32, kernel_size=(8, 8), strides=(4, 4), activation="relu", 
+        net = Conv2D(filters=32, kernel_size=(8, 8), strides=(4, 4), activation="relu",
                      kernel_initializer="he_uniform", data_format="channels_first")(network_input)
         net = Conv2D(filters=64, kernel_size=(4, 4), strides=(2, 2), activation="relu",
                      kernel_initializer="he_uniform")(net)
@@ -150,7 +150,7 @@ class Network:
         avg_action = Lambda(lambda x: K.mean(x, axis=1, keepdims=True))(action_values)
         concat_avg_action = Concatenate(axis=-1)([avg_action, avg_action])
 
-        for i in range(action_size-2):
+        for _ in range(action_size-2):
             value_function = Concatenate(axis=-1)([value_function, state_value])
             concat_avg_action = Concatenate(axis=-1)([concat_avg_action, avg_action])
 

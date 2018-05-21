@@ -95,7 +95,7 @@ def split_data(line):
     data = list()
     arr = np.array([string for string in line.split(", ")], dtype=str)
 
-    for i, item in enumerate(arr):
+    for _, item in enumerate(arr):
         word_parse = re.compile(r'''  ((?<=:.)-*[0-9]+\.*[0-9]*)''', re.X)
         parts = word_parse.findall(item)
 
@@ -135,7 +135,7 @@ def get_visualization(filename, graph_name, idx_val, coordinates=None, linears=N
     values = list()
     data, counter = read_file(filename)
 
-    for i, item in enumerate(data):
+    for _, item in enumerate(data):
         values.append(item[idx_val])
 
     if coordinates == None:

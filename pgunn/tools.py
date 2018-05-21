@@ -1,5 +1,5 @@
 """
-file contains support methods for processing of states 
+file contains support methods for processing of states
 """
 import numpy as np
 import scipy
@@ -35,7 +35,7 @@ def process_img(img):
     """
     method proceses image - make it gray and normalize
     """
-    img = scipy.misc.imresize(img, (84, 84), interp='bilinear') 
+    img = scipy.misc.imresize(img, (84, 84), interp='bilinear')
 
     red, green, blue = img[:,:,0], img[:,:,1], img[:,:,2]
     img = 0.299 * red + 0.587 * green + 0.114 * blue
