@@ -15,9 +15,9 @@ class Agent:
         self.initial_epsilon = 1
         self.final_epsilon = 0.1
         self.current_epsilon = self.initial_epsilon
-        self.epsilon_decay = 0.0002#0.0000009
+        self.epsilon_decay = 0.0000009 #0.0002#
         self.gamma = 0.99
-        self.minibatch_size = 256
+        self.minibatch_size = 32
         self.learning_rate = 0.001#0.00025
         self.fraction_update = 0.125
 

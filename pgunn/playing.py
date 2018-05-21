@@ -71,11 +71,11 @@ class Playing():
             elif task.type == "image":
                 state = engineer_img(state)
 
-            if task.args.num_of_frames == 4:
+            if task.args.frames == 4:
                 state = np.array([state, state, state, state])
-            elif task.args.num_of_frames == 3:
+            elif task.args.frames == 3:
                 state = np.array([state, state, state])
-            elif task.args.num_of_frames == 2:
+            elif task.args.frames == 2:
                 state = np.array([state, state])
 
             while not done:
@@ -111,11 +111,11 @@ class Playing():
                 elif task.type == "image":
                     next_state = engineer_img(next_state)
 
-                if task.args.num_of_frames == 4:
+                if task.args.frames == 4:
                     next_state = np.array([state[1], state[2], state[3], next_state])
-                elif task.args.num_of_frames == 3:
+                elif task.args.frames == 3:
                     next_state = np.array([state[1], state[2], next_state])
-                elif task.args.num_of_frames == 2:
+                elif task.args.frames == 2:
                     next_state = np.array([state[1], next_state])
 
                 state = next_state
@@ -184,22 +184,22 @@ class Playing():
             state = task.env.reset()
             state = engineer_img(state)
 
-            if task.args.num_of_frames == 4:
+            if task.args.frames == 4:
                 state = np.array([state, state, state, state])
-            elif task.args.num_of_frames == 3:
+            elif task.args.frames == 3:
                 state = np.array([state, state, state])
-            elif task.args.num_of_frames == 2:
+            elif task.args.frames == 2:
                 state = np.array([state, state])
 
             while True:
                 action = np.random.randint(0, task.env_action_size, size=1)[0]
                 next_state, reward, done, info = task.env.step(action)
 
-                if task.args.num_of_frames == 4:
+                if task.args.frames == 4:
                     next_state = np.array([state[1], state[2], state[3], engineer_img(next_state)])
-                elif task.args.num_of_frames == 3:
+                elif task.args.frames == 3:
                     next_state = np.array([state[1], state[2], engineer_img(next_state)])
-                elif task.args.num_of_frames == 2:
+                elif task.args.frames == 2:
                     next_state = np.array([state[1], engineer_img(next_state)])
 
                 if normalize_score and task.type != "basic":
@@ -290,22 +290,22 @@ class Playing():
             state = task.env.reset()
             state = engineer_img(state)
 
-            if task.args.num_of_frames == 4:
+            if task.args.frames == 4:
                 state = np.array([state, state, state, state])
-            elif task.args.num_of_frames == 3:
+            elif task.args.frames == 3:
                 state = np.array([state, state, state])
-            elif task.args.num_of_frames == 2:
+            elif task.args.frames == 2:
                 state = np.array([state, state])
 
             while True:
                 action = task.agent.get_action(state, epsilon=True)
                 next_state, reward, done, info = task.env.step(action)
 
-                if task.args.num_of_frames == 4:
+                if task.args.frames == 4:
                     next_state = np.array([state[1], state[2], state[3], engineer_img(next_state)])
-                elif task.args.num_of_frames == 3:
+                elif task.args.frames == 3:
                     next_state = np.array([state[1], state[2], engineer_img(next_state)])
-                elif task.args.num_of_frames == 2:
+                elif task.args.frames == 2:
                     next_state = np.array([state[1], engineer_img(next_state)])
 
                 if normalize_score and task.type != "basic":
@@ -387,22 +387,22 @@ class Playing():
             state = task.env.reset()
             state = engineer_img(state)
 
-            if task.args.num_of_frames == 4:
+            if task.args.frames == 4:
                 state = np.array([state, state, state, state])
-            elif task.args.num_of_frames == 3:
+            elif task.args.frames == 3:
                 state = np.array([state, state, state])
-            elif task.args.num_of_frames == 2:
+            elif task.args.frames == 2:
                 state = np.array([state, state])
 
             while True:
                 action = np.random.randint(0, task.env_action_size, size=1)[0]
                 next_state, reward, done, info = task.env.step(action)
 
-                if task.args.num_of_frames == 4:
+                if task.args.frames == 4:
                     next_state = np.array([state[1], state[2], state[3], engineer_img(next_state)])
-                elif task.args.num_of_frames == 3:
+                elif task.args.frames == 3:
                     next_state = np.array([state[1], state[2], engineer_img(next_state)])
-                elif task.args.num_of_frames == 2:
+                elif task.args.frames == 2:
                     next_state = np.array([state[1], engineer_img(next_state)])
 
                 if normalize_score and task.type != "basic":
@@ -493,22 +493,22 @@ class Playing():
             state = task.env.reset()
             state = engineer_img(state)
 
-            if task.args.num_of_frames == 4:
+            if task.args.frames == 4:
                 state = np.array([state, state, state, state])
-            elif task.args.num_of_frames == 3:
+            elif task.args.frames == 3:
                 state = np.array([state, state, state])
-            elif task.args.num_of_frames == 2:
+            elif task.args.frames == 2:
                 state = np.array([state, state])
 
             while True:
                 action = task.agent.get_action(state, epsilon=True)
                 next_state, reward, done, info = task.env.step(action)
 
-                if task.args.num_of_frames == 4:
+                if task.args.frames == 4:
                     next_state = np.array([state[1], state[2], state[3], engineer_img(next_state)])
-                elif task.args.num_of_frames == 3:
+                elif task.args.frames == 3:
                     next_state = np.array([state[1], state[2], engineer_img(next_state)])
-                elif task.args.num_of_frames == 2:
+                elif task.args.frames == 2:
                     next_state = np.array([state[1], engineer_img(next_state)])
 
                 if normalize_score and task.type != "basic":

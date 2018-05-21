@@ -17,7 +17,7 @@ import gym.wrappers as wrappers
 from task import Task
 from visualization import combined_graph
 from playing import Playing as pl
-from playing import engineer_img
+from tools import create_buffer, shift_buffer, normalize
 
 def err_print(*args, **kwargs):
     """
@@ -55,7 +55,7 @@ def get_args():
                         help="frequency of updating target net")
     parser.add_argument("-save_f", action="store", dest="save_f", type=int, default=25,
                         help="frequency of saving model")
-    parser.add_argument("-num_of_frames", action="store", dest="num_of_frames", type=int, default=1, choices=[1, 2, 3, 4],
+    parser.add_argument("-frames", action="store", dest="frames", type=int, default=1, choices=[1, 2, 3, 4],
                         help="Number of frames to process as a information of state.")
     parser.add_argument("-mode", action="store", dest="mode", required=True,
                         choices=["train", "test", "render"], default="train",
@@ -88,10 +88,10 @@ def get_args():
             err_print("Model file doesn't exist.")
             sys.exit(-1)
 
-    if args.num_of_frames != 1 and args.environment not in image:
+    if args.frames != 1 and args.environment not in image:
         err_print("Application doesn't support buffer of states for this environment.")
         sys.exit(-1)
-    elif args.num_of_frames == 1 and args.environment in image:
+    elif args.frames == 1 and args.environment in image:
         err_print("Application needs buffer of states for this environment.")
         sys.exit(-1)
 
@@ -112,19 +112,8 @@ def train(task, normalize_score=True):
         state = task.env.reset()
         last_state = state
 
-        if task.type == "text":
-            state = state / 16384
-        elif task.type == "ram":
-            state = state / 255
-        elif task.type == "image":
-            state = engineer_img(state)
-
-        if task.args.num_of_frames == 4:
-            state = np.array([state, state, state, state])
-        elif task.args.num_of_frames == 3:
-            state = np.array([state, state, state])
-        elif task.args.num_of_frames == 2:
-            state = np.array([state, state])
+        state = normalize(task, state)
+        state = create_buffer(task, state)
 
         normalized_score = 0
         true_score = 0
@@ -134,7 +123,6 @@ def train(task, normalize_score=True):
         for t in range(task.max_steps):
             action = task.agent.get_action(state, epsilon=True)
             next_state, reward, done, _ = task.env.step(action)
-
             true_score = true_score + reward
 
             if normalize_score and task.type != "basic":
@@ -153,19 +141,8 @@ def train(task, normalize_score=True):
             normalized_score = normalized_score + reward
 
             last_state = next_state
-            if task.type == "text": 
-                next_state = next_state / 16384
-            elif task.type == "ram":
-                next_state = next_state / 255
-            elif task.type == "image":
-                next_state = engineer_img(next_state)
-
-            if task.args.num_of_frames == 4:
-                next_state = np.array([state[1], state[2], state[3], next_state])
-            elif task.args.num_of_frames == 3:
-                next_state = np.array([state[1], state[2], next_state])
-            elif task.args.num_of_frames == 2:
-                next_state = np.array([state[1], next_state])
+            next_state = normalize(task, next_state)
+            next_state = shift_buffer(task, state, next_state)
 
             steps = steps + 1
             moves = moves + 1

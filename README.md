@@ -9,7 +9,7 @@ CartPole-v0, CartPole-v1, MountainCar-v0, Acrobot-v1, 2048-v0, SpaceInvaders-v0,
 
 Usage
 -----
-##### python3 main.py -env env -eps eps -mode mode [-alg alg] [-mem mem] [-net net] [-pu pu] [-mdl mdl] [-init] [-num_of_frames num_of_frames] [-save_f save_f] [-update_f update_f] [-vids]
+##### python3 main.py -env env -eps eps -mode mode [-alg alg] [-mem mem] [-net net] [-pu pu] [-mdl mdl] [-init] [-frames frames] [-save_f save_f] [-update_f update_f] [-vids]
 ###### Parameters:
 
     -env env           |   name of environment
@@ -21,7 +21,7 @@ Usage
     -pu pu             |   processing unit (CPU, GPU)
     -mdl mdl           |   existing model
     -init              |   initialization of experience replay
-    -num_of_frames num_of_frames    |   number of frames which goes to neural network input (2,3,4)
+    -frames frames     |   number of frames which goes to neural network input (2,3,4)
     -save_f save_f     |   model saving frequency
     -update_f update_f |   target network update frequency
     -vids              |   saving video
@@ -30,7 +30,7 @@ Examples
 -----------------
     python3 main.py -mode train -env CartPole-v0 -eps 5000 -alg DDQN -net dueling -mem prioritized -pu CPU -init -save_f 25
     python3 main.py -mode test -env Acrobot-v1 -eps 100 -mdl trained_models/basic_net/Acrobot-v1.h5
-    python3 main.py -mode render -env SpaceInvaders-ram-v0 -eps 200 -mdl trained_models/basic_net/SpaceInvaders-ram-v0.h5 -num_of_frames 4 -vids
+    python3 main.py -mode render -env SpaceInvaders-ram-v0 -eps 200 -mdl trained_models/basic_net/SpaceInvaders-ram-v0.h5 -frames 4 -vids
 
 ****
 ###### Created by: Petr Buchal

@@ -3,6 +3,7 @@ file contains class Task, which is wrapper
 for working with different environments
 """
 import sys
+from keras import backend as K
 import gym
 import gym_2048
 from agent import Agent
@@ -77,6 +78,8 @@ class Task:
                            [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
             print("[Graph of learning progress visualization was made.]")
             print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
+            print("[SUCCESSFUL RUN]")
+            K.clear_session()
             sys.exit()
 
     def cartp1(self):
@@ -117,6 +120,8 @@ class Task:
                            [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
             print("[Graph of learning progress visualization was made.]")
             print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
+            print("[SUCCESSFUL RUN]")
+            K.clear_session()
             sys.exit()
 
     def mcar0(self):
@@ -157,6 +162,8 @@ class Task:
                            [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
             print("[Graph of learning progress visualization was made.]")
             print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
+            print("[SUCCESSFUL RUN]")
+            K.clear_session()
             sys.exit()
 
     def acro1(self):
@@ -187,6 +194,8 @@ class Task:
                            [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
             print("[Graph of learning progress visualization was made.]")
             print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
+            print("[SUCCESSFUL RUN]")
+            K.clear_session()
             sys.exit()
 
     def tfe0(self):
@@ -211,7 +220,7 @@ class Task:
         """
         self.name = self.args.environment
         self.env = gym.make(self.name)
-        self.env_state_size = (self.args.num_of_frames, 84, 84)
+        self.env_state_size = (self.args.frames, 84, 84)
         self.env_action_size = self.env.action_space.n
         self.type = "image"
         self.solved_score = 31
@@ -227,7 +236,7 @@ class Task:
         """
         self.name = self.args.environment
         self.env = gym.make(self.name)
-        self.env_state_size = (self.args.num_of_frames, 84, 84)
+        self.env_state_size = (self.args.frames, 84, 84)
         self.env_action_size = self.env.action_space.n
         self.type = "image"
         self.solved_score = 3690
@@ -243,7 +252,7 @@ class Task:
         """
         self.name = self.args.environment
         self.env = gym.make(self.name)
-        self.env_state_size = (self.args.num_of_frames, 84, 84)
+        self.env_state_size = (self.args.frames, 84, 84)
         self.env_action_size = self.env.action_space.n
         self.type = "image"
         self.solved_score = 7456
