@@ -15,9 +15,9 @@ class Agent:
         self.initial_epsilon = 1
         self.final_epsilon = 0.1
         self.current_epsilon = self.initial_epsilon
-        self.epsilon_decay = 0.0000009 #0.0002#
+        self.epsilon_decay = 0.0002#0.0000009 #
         self.gamma = 0.99
-        self.minibatch_size = 32
+        self.minibatch_size = 256
         self.learning_rate = 0.001#0.00025
         self.fraction_update = 0.125
 
@@ -277,25 +277,25 @@ class Agent:
         method loads weights to primary neural network
         """
         self.model_net.load_weights(name)
-        print("[Model has been loaded.]")
+        print("[Model has been loaded from \"{}\".]" .format(name))
 
     def save_model_weights(self, name):
         """
         method saves weights of primary neural network
         """
         self.model_net.save_weights("./model-{}".format(name))
-        print("[Model was saved.]")
+        print("[Model was saved to \"./model-{}\".]" .format(name))
 
     def load_target_weights(self, name):
         """
         method loads weights to target neural network
         """
         self.target_net.load_weights(name)
-        print("[Target model has been loaded.]")
+        print("[Target model has been loaded from \"{}\".]" .format(name))
 
     def save_target_weights(self, name):
         """
         method saves weights of target neural network
         """
         self.target_net.save_weights("./target-{}".format(name))
-        print("[Target model was saved.]")
+        print("[Target model was saved to \"./target-{}\".]" .format(name))

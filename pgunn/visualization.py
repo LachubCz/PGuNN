@@ -10,6 +10,7 @@ import matplotlib
 matplotlib.use('Agg')
 warnings.simplefilter('ignore', np.RankWarning)
 warnings.simplefilter('ignore', RuntimeWarning)
+warnings.simplefilter('ignore', UserWarning)
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import cm
 from scipy.ndimage.filters import gaussian_filter
@@ -71,7 +72,7 @@ def combined_graph(scores, episode_numbers, name, coordinates=None, linears=None
 
     plt.savefig("./{}" .format(name), bbox_inches='tight')
     plt.clf()
-    print("[Graph of learning progress visualization was made.]")
+    print("[Graph of learning progress visualization was saved to \"./{}\".]" .format(name))
 
 def heat_map(array, graph_name, axes):
     """

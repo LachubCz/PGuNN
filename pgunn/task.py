@@ -73,10 +73,8 @@ class Task:
 
         if score > self.solved_score:
             self.agent.save_model_weights("{}-solved.h5" .format(self.name))
-            print("[Model was saved.]")
             combined_graph(scores, episode_numbers, "{}_results" .format(self.name),
                            [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
-            print("[Graph of learning progress visualization was made.]")
             print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
             print("[SUCCESSFUL RUN]")
             K.clear_session()
@@ -115,10 +113,8 @@ class Task:
 
         if score > self.solved_score:
             self.agent.save_model_weights("{}-solved.h5" .format(self.name))
-            print("[Model was saved.]")
             combined_graph(scores, episode_numbers, "{}_results" .format(self.name),
                            [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
-            print("[Graph of learning progress visualization was made.]")
             print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
             print("[SUCCESSFUL RUN]")
             K.clear_session()
@@ -157,10 +153,8 @@ class Task:
 
         if score > self.solved_score:
             self.agent.save_model_weights("{}-solved.h5" .format(self.name))
-            print("[Model was saved.]")
             combined_graph(scores, episode_numbers, "{}_results" .format(self.name), 
                            [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
-            print("[Graph of learning progress visualization was made.]")
             print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
             print("[SUCCESSFUL RUN]")
             K.clear_session()
@@ -189,10 +183,8 @@ class Task:
         if episode_numbers[-1] == 99:
             score = pl.agent_score_estimate(self, 100)
             self.agent.save_model_weights("{}-solved.h5" .format(self.name))
-            print("[Model was saved.]")
             combined_graph(scores, episode_numbers, "{}_results" .format(self.name), 
                            [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
-            print("[Graph of learning progress visualization was made.]")
             print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
             print("[SUCCESSFUL RUN]")
             K.clear_session()
