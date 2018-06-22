@@ -10,6 +10,7 @@ import scipy.misc
 import numpy as np
 from tqdm import tqdm
 from tqdm import trange
+from tools import split_2048
 
 def engineer_img(img):
     """
@@ -449,7 +450,7 @@ class Playing():
                     action = np.random.randint(0, task.env_action_size, size=1)[0]
                     wrong_move = False
                 else:
-                    action = task.agent.get_action(state, epsilon=True)
+                    action = task.agent.get_action(task, state, epsilon=True)
                 next_state, reward, done, info = task.env.step(action)
 
                 if normalize_score and task.type != "basic":

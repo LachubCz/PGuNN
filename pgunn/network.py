@@ -1,11 +1,14 @@
 """
 file contains implementation of several neural network models
 """
+import numpy as np
 import tensorflow as tf
 from keras.models import Model
 from keras.layers import Input, Conv2D, Flatten, Dense, Concatenate, Lambda, Subtract, Add
 from keras import backend as K
 from keras import optimizers, losses
+from keras.utils import plot_model
+from tools import get_name
 
 def err_print(*args, **kwargs):
     """
@@ -13,14 +16,15 @@ def err_print(*args, **kwargs):
     """
     print(*args, file=sys.stderr, **kwargs)
 
-def visualize_model(model, plot_model=[True, False]):
+def visualize_model(model, plot_mdl=[True, False]):
     """
     method prints model to stdout and pdf
     """
-    if plot_model[0]:
+    if plot_mdl[0]:
         model.summary()
-    if plot_model[1]:
-        plot_model(model, to_file='model.pdf', show_shapes=True, show_layer_names=False)
+    if plot_mdl[1]:
+        name = get_name("model")
+        plot_model(model, to_file=name, show_shapes=True, show_layer_names=False)
 
 def mse_mae(y_true, y_pred):
     """
@@ -66,6 +70,53 @@ class Network:
         net = Dense(units=self.action_size, activation="linear", kernel_initializer="he_uniform")(net)
 
         model = Model(inputs=network_input, outputs=net)
+
+        visualize_model(model, self.plot_model)
+        model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=['accuracy'])
+
+        return model
+
+    def make_2048_experm_mdl(self, units):
+        """
+        method returns complicated neural network model for playing 2048
+        """
+        collumn1 = Input(shape=(4,))
+        d_collumn1 = Dense(units=6, activation="relu", kernel_initializer="he_uniform")(collumn1)
+        d_collumn1 = Dense(units=2, activation="relu", kernel_initializer="he_uniform")(d_collumn1)
+        collumn2 = Input(shape=(4,))
+        d_collumn2 = Dense(units=6, activation="relu", kernel_initializer="he_uniform")(collumn2)
+        d_collumn2 = Dense(units=2, activation="relu", kernel_initializer="he_uniform")(d_collumn2)
+        collumn3 = Input(shape=(4,))
+        d_collumn3 = Dense(units=6, activation="relu", kernel_initializer="he_uniform")(collumn3)
+        d_collumn3 = Dense(units=2, activation="relu", kernel_initializer="he_uniform")(d_collumn3)
+        collumn4 = Input(shape=(4,))
+        d_collumn4 = Dense(units=6, activation="relu", kernel_initializer="he_uniform")(collumn4)
+        d_collumn4 = Dense(units=2, activation="relu", kernel_initializer="he_uniform")(d_collumn4)
+
+        row1 = Input(shape=(4,))
+        d_row1 = Dense(units=6, activation="relu", kernel_initializer="he_uniform")(row1)
+        d_row1 = Dense(units=2, activation="relu", kernel_initializer="he_uniform")(d_row1)
+        row2 = Input(shape=(4,))
+        d_row2 = Dense(units=6, activation="relu", kernel_initializer="he_uniform")(row2)
+        d_row2 = Dense(units=2, activation="relu", kernel_initializer="he_uniform")(d_row2)
+        row3 = Input(shape=(4,))
+        d_row3 = Dense(units=6, activation="relu", kernel_initializer="he_uniform")(row3)
+        d_row3 = Dense(units=2, activation="relu", kernel_initializer="he_uniform")(d_row3)
+        row4 = Input(shape=(4,))
+        d_row4 = Dense(units=6, activation="relu", kernel_initializer="he_uniform")(row4)
+        d_row4 = Dense(units=2, activation="relu", kernel_initializer="he_uniform")(d_row4)
+
+        c_merge = Concatenate(axis=-1)([d_collumn1, d_collumn2, d_collumn3, d_collumn4])
+        r_merge = Concatenate(axis=-1)([d_row1, d_row2, d_row3, d_row4])
+        merge = Concatenate(axis=-1)([c_merge, r_merge])
+
+        net = Dense(units=units[0], activation="relu", kernel_initializer="he_uniform")(merge)
+        net = Dense(units=units[1], activation="relu", kernel_initializer="he_uniform")(net)
+        net = Dense(units=units[2], activation="relu", kernel_initializer="he_uniform")(net)
+        net = Dense(units=units[2], activation="relu", kernel_initializer="he_uniform")(net)
+        net = Dense(units=self.action_size, activation="linear", kernel_initializer="he_uniform")(net)
+
+        model = Model(inputs=[collumn1, collumn2, collumn3, collumn4, row1, row2, row3, row4], outputs=net)
 
         visualize_model(model, self.plot_model)
         model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=['accuracy'])
@@ -180,3 +231,22 @@ class Network:
         model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=['accuracy'])
 
         return model
+"""
+def split_2048(vector):
+    
+    method splits 2048 gameboard into several vectors
+    
+    tensor = []
+    for x in range(8):
+        tensor.append(np.zeros((1,4)))
+    for i in range(4):
+        for e in range(4):
+            tensor[i][0][e] = vector[i*4+e]
+    for i in range(4):
+        for e in range(4):
+            tensor[e+4][0][i] = vector[i*4+e]
+    return tensor
+"""
+
+if __name__ == "__main__":
+    pass

@@ -21,7 +21,7 @@ Usage
     -pu pu             |   processing unit (CPU, GPU)
     -mdl mdl           |   existing model
     -init              |   initialization of experience replay
-    -frames frames     |   number of frames which goes to neural network input (2,3,4)
+    -frames frames     |   number of frames which goes to neural network input (1,2,3,4)
     -save_f save_f     |   model saving frequency
     -update_f update_f |   target network update frequency
     -vids              |   saving video

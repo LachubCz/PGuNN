@@ -8,6 +8,7 @@ import os.path
 import argparse
 import warnings
 warnings.simplefilter('ignore', FutureWarning)
+import numpy as np
 import tensorflow as tf
 from keras.backend.tensorflow_backend import set_session
 from keras import backend as K
@@ -16,7 +17,7 @@ import gym.wrappers as wrappers
 from task import Task
 from visualization import combined_graph
 from playing import Playing as pl
-from tools import create_buffer, shift_buffer, normalize
+from tools import create_buffer, shift_buffer, normalize, split_2048
 
 def err_print(*args, **kwargs):
     """
@@ -34,7 +35,7 @@ def get_args():
                         help="init replay memory with random agent observations")
     parser.add_argument("-mem", action="store", dest="memory", choices=["basic", "prioritized"],
                         default="basic", help="type of memory")
-    parser.add_argument("-net", action="store", dest="network", choices=["basic", "dueling"],
+    parser.add_argument("-net", action="store", dest="network", choices=["basic", "dueling", "experimental"],
                         default="basic", help="type of neural network architecture")
     parser.add_argument("-alg", action="store", dest="algorithm", choices=["DQN", "DQN+TN", "DDQN"],
                         default="DQN", help="type of algorithm")
@@ -120,7 +121,7 @@ def train(task, normalize_score=True):
         wrong_moves = 0
 
         for _ in range(task.max_steps):
-            action = task.agent.get_action(state, epsilon=True)
+            action = task.agent.get_action(task, state, epsilon=True)
             next_state, reward, done, _ = task.env.step(action)
             true_score = true_score + reward
 
@@ -145,7 +146,7 @@ def train(task, normalize_score=True):
 
             steps = steps + 1
             moves = moves + 1
-            
+
             task.agent.remember(state, action, reward, next_state, done, rand_agent=False)
             task.agent.train()
 

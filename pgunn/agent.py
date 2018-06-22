@@ -6,6 +6,7 @@ import numpy as np
 from collections import deque
 from memory import Memory
 from network import Network
+from tools import split_2048
 
 class Agent:
     """
@@ -15,14 +16,14 @@ class Agent:
         self.initial_epsilon = 1
         self.final_epsilon = 0.1
         self.current_epsilon = self.initial_epsilon
-        self.epsilon_decay = 0.0002#0.0000009 #
+        self.epsilon_decay = 0.0000009
         self.gamma = 0.99
-        self.minibatch_size = 256
-        self.learning_rate = 0.001#0.00025
+        self.minibatch_size = 128
+        self.learning_rate = 0.0005
         self.fraction_update = 0.125
 
         self.memory_type = memory_type
-        self.memory_size = 10000#200000
+        self.memory_size = 250000
         if self.memory_type == "basic":
             self.memory = deque(maxlen=self.memory_size)
         else:
@@ -33,6 +34,7 @@ class Agent:
 
         network = Network(state_size, action_size, self.learning_rate, "MSE", [True, False])
 
+        self.model_type = model_type
         if model_type == "2layer_bsc_mdl":
             self.model_net = network.make_2layer_mdl(net_units)
             self.target_net = network.make_2layer_mdl(net_units)
@@ -48,6 +50,9 @@ class Agent:
         elif model_type == "1layer_ram_mdl":
             self.model_net = network.make_1layer_mdl(net_units)
             self.target_net = network.make_1layer_mdl(net_units)
+        elif model_type == "experimental":
+            self.model_net = network.make_2048_experm_mdl([128, 128, 128, 128])
+            self.target_net = network.make_2048_experm_mdl([128, 128, 128, 128])
 
         self.update_target_net()
 
@@ -126,18 +131,24 @@ class Agent:
             else:
                 self.current_epsilon = self.final_epsilon
 
-    def get_action(self, state, epsilon):
+    def get_action(self, task, state, epsilon):
         """
         method returns action to take
         """
         if not epsilon:
-            q_value = self.model_net.predict(np.array([state]))
+            if task.args.network == "experimental":
+                q_value = self.model_net.predict(split_2048(state))
+            else:
+                q_value = self.model_net.predict(np.array([state]))
             return np.argmax(q_value)
 
         if np.random.rand() <= self.current_epsilon:
             return np.random.randint(0, self.action_size, size=1)[0]
         else:
-            q_value = self.model_net.predict(np.array([state]))
+            if task.args.network == "experimental":
+                q_value = self.model_net.predict(split_2048(state))
+            else:
+                q_value = self.model_net.predict(np.array([state]))
             return np.argmax(q_value)
 
     def get_minibatch(self):
@@ -146,7 +157,6 @@ class Agent:
         """
         if self.memory_type == "basic":
             minibatch = random.sample(list(self.memory), self.minibatch_size)
-
             state = np.array([i[0] for i in minibatch])
             action = [i[1] for i in minibatch]
             reward = [i[2] for i in minibatch]
@@ -173,6 +183,7 @@ class Agent:
         """
         method trains agent using DQN
         """
+        #print(self.memory)
         if self.memory_type == "basic":
             if len(self.memory) >= self.minibatch_size:
                 state, action, reward, next_state, done = self.get_minibatch()
@@ -185,9 +196,14 @@ class Agent:
                 return
 
         errors = np.zeros(self.minibatch_size)
-
-        q_value = self.model_net.predict(state)
-        ns_model_pred = self.model_net.predict(next_state)
+        if self.model_type == "experimental":
+            state = split_2048(state)
+            next_state = split_2048(next_state)
+            q_value = self.model_net.predict(state)
+            ns_model_pred = self.model_net.predict(next_state)
+        else:
+            q_value = self.model_net.predict(np.array(state))
+            ns_model_pred = self.model_net.predict(np.array(next_state))
 
         for i in range(0, self.minibatch_size):
             errors[i] = q_value[i][action[i]]
@@ -219,9 +235,14 @@ class Agent:
                 return
 
         errors = np.zeros(self.minibatch_size)
-
-        q_value = self.model_net.predict(state)
-        ns_target_pred = self.target_net.predict(next_state)
+        if self.model_type == "experimental":
+            state = split_2048(state)
+            next_state = split_2048(next_state)
+            q_value = self.model_net.predict(state)
+            ns_model_pred = self.model_net.predict(next_state)
+        else:
+            q_value = self.model_net.predict(np.array(state))
+            ns_model_pred = self.model_net.predict(np.array(next_state))
 
         for i in range(0, self.minibatch_size):
             errors[i] = q_value[i][action[i]]
@@ -253,10 +274,16 @@ class Agent:
                 return
 
         errors = np.zeros(self.minibatch_size)
-
-        q_value = self.model_net.predict(state)
-        ns_model_pred = self.model_net.predict(next_state)
-        ns_target_pred = self.target_net.predict(next_state)
+        if self.model_type == "experimental":
+            state = split_2048(state)
+            next_state = split_2048(next_state)
+            q_value = self.model_net.predict(state)
+            ns_model_pred = self.model_net.predict(next_state)
+            ns_target_pred = self.target_net.predict(next_state)
+        else:
+            q_value = self.model_net.predict(state)
+            ns_model_pred = self.model_net.predict(next_state)
+            ns_target_pred = self.target_net.predict(next_state)
 
         for i in range(0, self.minibatch_size):
             errors[i] = q_value[i][action[i]]

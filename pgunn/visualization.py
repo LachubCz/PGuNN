@@ -14,6 +14,7 @@ warnings.simplefilter('ignore', UserWarning)
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import cm
 from scipy.ndimage.filters import gaussian_filter
+from tools import get_name
 
 SMALL_SIZE = 10
 MEDIUM_SIZE = 12
@@ -26,22 +27,6 @@ plt.rc('xtick', labelsize=SMALL_SIZE)
 plt.rc('ytick', labelsize=SMALL_SIZE)
 plt.rc('legend', fontsize=MEDIUM_SIZE)
 plt.rc('figure', titlesize=BIGGER_SIZE)
-
-def get_name(graph_name):
-    """
-    method creates name for pdf
-    """
-    if os.path.isfile(graph_name+".pdf"):
-        i=1
-        while True:
-            if not os.path.isfile(graph_name+"("+str(i)+").pdf"):
-                graph_name = graph_name+"("+str(i)+").pdf"
-                break
-            i+=1
-    else:
-        graph_name = graph_name + ".pdf"
-
-    return graph_name
 
 def combined_graph(scores, episode_numbers, name, coordinates=None, linears=None, scatter=False):
     """
