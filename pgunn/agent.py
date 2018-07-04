@@ -51,8 +51,8 @@ class Agent:
             self.model_net = network.make_1layer_mdl(net_units)
             self.target_net = network.make_1layer_mdl(net_units)
         elif model_type == "experimental":
-            self.model_net = network.make_2048_experm_mdl([128, 128, 128, 128])
-            self.target_net = network.make_2048_experm_mdl([128, 128, 128, 128])
+            self.model_net = network.make_2048_experm_mdl([64,64])
+            self.target_net = network.make_2048_experm_mdl([64,64])
 
         self.update_target_net()
 

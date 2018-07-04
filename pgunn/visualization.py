@@ -131,4 +131,4 @@ def get_visualization(filename, graph_name, idx_val, coordinates=None, linears=N
 
 
 if __name__ == "__main__":
-    get_visualization("result.txt", "results", 6, coordinates=None, linears={22:22}, scatter=True)
+    get_visualization("results.out", "results", 7, coordinates=None, linears={1011:1011}, scatter=True)

@@ -112,8 +112,6 @@ class Network:
 
         net = Dense(units=units[0], activation="relu", kernel_initializer="he_uniform")(merge)
         net = Dense(units=units[1], activation="relu", kernel_initializer="he_uniform")(net)
-        net = Dense(units=units[2], activation="relu", kernel_initializer="he_uniform")(net)
-        net = Dense(units=units[2], activation="relu", kernel_initializer="he_uniform")(net)
         net = Dense(units=self.action_size, activation="linear", kernel_initializer="he_uniform")(net)
 
         model = Model(inputs=[collumn1, collumn2, collumn3, collumn4, row1, row2, row3, row4], outputs=net)

@@ -96,3 +96,63 @@ def get_name(graph_name):
         graph_name = graph_name + ".pdf"
 
     return graph_name
+
+def check_direction(matrix):
+    """
+    method checks if fields in vector can be merged
+    returns (a, d), (w, s)
+    """
+    moves = [0,0]
+
+    for i, item in enumerate(matrix):
+        if item == 0:
+            continue
+        if i != 0:
+            if matrix[i-1] == 0 and item != 0:
+                moves[0] = 1
+        for e, elem in enumerate(matrix[(1+i):]):
+            if item == elem and item != 0:
+                moves[0] = 1
+                moves[1] = 1
+                return moves[0], moves[1]
+            elif elem == 0:
+                moves[1] = 1
+                continue
+            else:
+                break
+
+    return moves[0], moves[1]
+
+def possible_moves(matrix):
+    """
+    method checks if fields in vector can be merged
+    returns (w,d,s,a)
+    """
+    moves = [0,0,0,0]
+    w = 0
+    a = 0
+    s = 0
+    d = 0
+    
+    tensor = split_2048(matrix)
+
+    for i, item in enumerate(tensor):
+        if i < 4:
+            if moves[3] == 1 and moves[1] == 1:
+                continue
+            else:
+                a, d = check_direction(item[0])
+                if a == 1:
+                    moves[3] = a
+                if d == 1:
+                    moves[1] = d
+        else:
+            if moves[0] == 1 and moves[2] == 1:
+                continue
+            else:
+                w, s = check_direction(item[0])
+                if w == 1:
+                    moves[0] = w
+                if s == 1:
+                    moves[2] = s
+    return moves
