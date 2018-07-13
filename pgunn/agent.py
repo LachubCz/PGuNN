@@ -6,7 +6,7 @@ import numpy as np
 from collections import deque
 from memory import Memory
 from network import Network
-from tools import split_2048
+from tools import split_2048, possible_moves
 
 class Agent:
     """
@@ -51,8 +51,8 @@ class Agent:
             self.model_net = network.make_1layer_mdl(net_units)
             self.target_net = network.make_1layer_mdl(net_units)
         elif model_type == "experimental":
-            self.model_net = network.make_2048_experm_mdl([64,64])
-            self.target_net = network.make_2048_experm_mdl([64,64])
+            self.model_net = network.make_4layer_mdl([128, 128, 128, 128])
+            self.target_net = network.make_4layer_mdl([128, 128, 128, 128])
 
         self.update_target_net()
 
@@ -61,6 +61,7 @@ class Agent:
                            "DQN+TN" : self.train_target_dqn,
                            "DDQN" : self.train_ddqn,
                           }
+        self.name = "2048-v0"
 
     def update_target_net(self):
         """
@@ -131,24 +132,40 @@ class Agent:
             else:
                 self.current_epsilon = self.final_epsilon
 
-    def get_action(self, task, state, epsilon):
+    def get_action(self, task, state, non_normalized_state, epsilon):
         """
         method returns action to take
         """
         if not epsilon:
-            if task.args.network == "experimental":
-                q_value = self.model_net.predict(split_2048(state))
-            else:
-                q_value = self.model_net.predict(np.array([state]))
-            return np.argmax(q_value)
-
-        if np.random.rand() <= self.current_epsilon:
-            return np.random.randint(0, self.action_size, size=1)[0]
+            #if task.args.network == "experimental":
+            #    q_value = self.model_net.predict(split_2048(state))
+            #else:
+            q_value = self.model_net.predict(np.array([state]))
         else:
-            if task.args.network == "experimental":
-                q_value = self.model_net.predict(split_2048(state))
+            if np.random.rand() <= self.current_epsilon:
+                if task.name == "2048-v0":
+                    possible_actions = possible_moves(non_normalized_state)
+                    while True:
+                        rand_action = np.random.randint(0, self.action_size, size=1)[0]
+                        if possible_actions[rand_action] == 1:
+                            return rand_action
+                else:
+                    return np.random.randint(0, self.action_size, size=1)[0]
             else:
+                #if task.args.network == "experimental":
+                #    q_value = self.model_net.predict(split_2048(state))
+                #else:
                 q_value = self.model_net.predict(np.array([state]))
+
+        if task.name == "2048-v0":
+            possible_actions = possible_moves(non_normalized_state)
+            while True:
+                chosen_action = np.argmax(q_value)
+                if possible_actions[chosen_action] == 1:
+                    return chosen_action
+                else:
+                    q_value[0][chosen_action] = -100
+
             return np.argmax(q_value)
 
     def get_minibatch(self):
@@ -202,6 +219,14 @@ class Agent:
             q_value = self.model_net.predict(state)
             ns_model_pred = self.model_net.predict(next_state)
         else:
+            possible_actions_curr = []
+            if self.name == "2048-v0": 
+                for i, item in enumerate(state):
+                    possible_actions_curr.append(possible_moves(item))
+
+                state = state / 16384.0 - 0.5
+                next_state = next_state / 16384.0 - 0.5
+
             q_value = self.model_net.predict(np.array(state))
             ns_model_pred = self.model_net.predict(np.array(next_state))
 
@@ -214,6 +239,11 @@ class Agent:
                 q_value[i][action[i]] = reward[i] + self.gamma * np.max(ns_model_pred[i])
 
             errors[i] = abs(errors[i] - q_value[i][action[i]])
+
+        for i, item in enumerate(possible_actions_curr):
+            for e, elem in enumerate(item):
+                if elem == 0:
+                    q_value[i][e] = -1
 
         self.model_net.fit(state, q_value, epochs=1, verbose=0)
         if self.memory_type == "dueling":
@@ -241,6 +271,14 @@ class Agent:
             q_value = self.model_net.predict(state)
             ns_model_pred = self.model_net.predict(next_state)
         else:
+            possible_actions_curr = []
+            if self.name == "2048-v0": 
+                for i, item in enumerate(state):
+                    possible_actions_curr.append(possible_moves(item))
+
+                state = state / 16384.0 - 0.5
+                next_state = next_state / 16384.0 - 0.5
+
             q_value = self.model_net.predict(np.array(state))
             ns_model_pred = self.model_net.predict(np.array(next_state))
 
@@ -253,6 +291,11 @@ class Agent:
                 q_value[i][action[i]] = reward[i] + self.gamma * np.max(ns_target_pred[i])
 
             errors[i] = abs(errors[i] - q_value[i][action[i]])
+
+        for i, item in enumerate(possible_actions_curr):
+            for e, elem in enumerate(item):
+                if elem == 0:
+                    q_value[i][e] = -1
 
         self.model_net.fit(state, q_value, epochs=1, verbose=0)
         if self.memory_type == "dueling":
@@ -274,16 +317,25 @@ class Agent:
                 return
 
         errors = np.zeros(self.minibatch_size)
+        """
         if self.model_type == "experimental":
             state = split_2048(state)
             next_state = split_2048(next_state)
             q_value = self.model_net.predict(state)
             ns_model_pred = self.model_net.predict(next_state)
             ns_target_pred = self.target_net.predict(next_state)
-        else:
-            q_value = self.model_net.predict(state)
-            ns_model_pred = self.model_net.predict(next_state)
-            ns_target_pred = self.target_net.predict(next_state)
+        else:"""
+        possible_actions_curr = []
+        if self.name == "2048-v0": 
+            for i, item in enumerate(state):
+                possible_actions_curr.append(possible_moves(item))
+
+            state = state / 16384.0 - 0.5
+            next_state = next_state / 16384.0 - 0.5
+
+        q_value = self.model_net.predict(state)
+        ns_model_pred = self.model_net.predict(next_state)
+        ns_target_pred = self.target_net.predict(next_state)
 
         for i in range(0, self.minibatch_size):
             errors[i] = q_value[i][action[i]]
@@ -294,6 +346,11 @@ class Agent:
                 q_value[i][action[i]] = reward[i] + self.gamma * ns_target_pred[i][np.argmax(ns_model_pred[i])]
 
             errors[i] = abs(errors[i] - q_value[i][action[i]])
+
+        for i, item in enumerate(possible_actions_curr):
+            for e, elem in enumerate(item):
+                if elem == 0:
+                    q_value[i][e] = -1
 
         self.model_net.fit(state, q_value, epochs=1, verbose=0)
         if self.memory_type == "dueling":

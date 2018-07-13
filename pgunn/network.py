@@ -76,6 +76,25 @@ class Network:
 
         return model
 
+    def make_4layer_mdl(self, units):
+        """
+        method returns 2 layer neural network model
+        """
+        network_input = Input(shape=(self.state_size,))
+
+        net = Dense(units=units[0], activation="relu", kernel_initializer="he_uniform")(network_input)
+        net = Dense(units=units[1], activation="relu", kernel_initializer="he_uniform")(net)
+        net = Dense(units=units[2], activation="relu", kernel_initializer="he_uniform")(net)
+        net = Dense(units=units[3], activation="relu", kernel_initializer="he_uniform")(net)
+        net = Dense(units=self.action_size, activation="linear", kernel_initializer="he_uniform")(net)
+
+        model = Model(inputs=network_input, outputs=net)
+
+        visualize_model(model, self.plot_model)
+        model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=['accuracy'])
+
+        return model
+
     def make_2048_experm_mdl(self, units):
         """
         method returns complicated neural network model for playing 2048

@@ -121,7 +121,7 @@ def train(task, normalize_score=True):
         wrong_moves = 0
 
         for _ in range(task.max_steps):
-            action = task.agent.get_action(task, state, epsilon=True)
+            action = task.agent.get_action(task, state, last_state, epsilon=True)
             next_state, reward, done, _ = task.env.step(action)
             true_score = true_score + reward
 
@@ -140,6 +140,7 @@ def train(task, normalize_score=True):
 
             normalized_score = normalized_score + reward
 
+            new_state = next_state
             last_state = next_state
             next_state = normalize(task, next_state)
             next_state = shift_buffer(task, state, next_state)
@@ -147,7 +148,11 @@ def train(task, normalize_score=True):
             steps = steps + 1
             moves = moves + 1
 
-            task.agent.remember(state, action, reward, next_state, done, rand_agent=False)
+            if task.name == "2048-v0":
+                task.agent.remember(last_state, action, reward, new_state, done, rand_agent=False)
+            else:
+                task.agent.remember(state, action, reward, next_state, done, rand_agent=False)
+
             task.agent.train()
 
             task.agent.decrease_epsilon()

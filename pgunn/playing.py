@@ -341,13 +341,12 @@ class Playing():
         while True:
             state = task.env.reset()
 
-            if task.type == "text": 
-                state = state / 16384
-            elif task.type == "ram":
+            if task.type == "ram":
                 state = state / 255
 
             while True:
-                action = np.random.randint(0, task.env_action_size, size=1)[0]
+                action = task.agent.get_action(task, state, state, epsilon=True)
+
                 next_state, reward, done, info = task.env.step(action)
 
                 if normalize_score and task.type != "basic":
@@ -359,9 +358,7 @@ class Playing():
                     if done:
                         reward = -1.0
 
-                if task.type == "text": 
-                    next_state = next_state / 16384
-                elif task.type == "ram":
+                if task.type == "ram":
                     next_state = next_state / 255
 
                 task.agent.remember(state, action, reward, next_state, done, rand_agent=True)
