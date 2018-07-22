@@ -219,7 +219,7 @@ def main():
     if task.args.model is not None:
         task.agent.load_model_weights("./{}" .format(task.args.model))
         task.agent.update_target_net()
-        
+
         task.agent.current_epsilon = 0.1
 
         if task.args.init and task.args.mode == "train":
@@ -229,7 +229,7 @@ def main():
         task.env = wrappers.Monitor(task.env, "./", video_callable=lambda episode_id: episode_id%1==0, force=True)
 
     if task.args.mode == "train":
-        task, true_scores, episodes_numbers, highest, normalized_scores = train(task, True)
+        task, true_scores, episodes_numbers, _, normalized_scores = train(task, True)
         task.agent.save_model_weights("{}-last.h5" .format(task.name))
         task.agent.save_target_weights("{}-last.h5" .format(task.name))
         try:

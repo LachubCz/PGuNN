@@ -204,7 +204,7 @@ def agent_score_estimate(task, games, render=False, show_bar=False):
             elif render:
                 time.sleep(0.03)
                 task.env.render()
-                    
+
             if task.name == "2048-v0" and wrong_move:
                 action = np.argmax(actions)
                 wrong_move = False
