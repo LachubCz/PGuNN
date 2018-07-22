@@ -16,7 +16,7 @@ import gym.wrappers as wrappers
 
 from task import Task
 from visualization import combined_graph
-from tools import create_buffer, shift_buffer, normalize, split_2048, agent_score_estimate, load_memories
+from tools import create_buffer, shift_buffer, normalize, agent_score_estimate, load_memories
 
 def err_print(*args, **kwargs):
     """

@@ -2,11 +2,9 @@
 file contains support methods for processing of states
 """
 import os
-import sys
 import numpy as np
 import scipy
 import scipy.misc
-from tqdm import tqdm
 from tqdm import trange
 
 def split_2048(vector):
@@ -173,7 +171,7 @@ def rand_score_estimate(task, games):
 
         while not done:
             action = np.random.randint(0, task.env_action_size, size=1)[0]
-            next_state, reward, done, info = task.env.step(action)
+            _, reward, done, info = task.env.step(action)
             total_reward = total_reward + reward
 
         if game != 0:
@@ -189,6 +187,7 @@ def agent_score_estimate(task, games, render=False, show_bar=False):
     """
     total_reward = 0
     bar = trange(games, leave=True, disable=(not show_bar))
+    actions = None
     for game in bar:
         state = task.env.reset()
         last_state = state
@@ -285,12 +284,12 @@ def load_memories(task, rnd, normalize_score=True):
 
             if task.args.memory == "basic":
                 if len(task.agent.memory) == task.agent.memory_size:
-                    print("[Agent added {} new memories. Current memory_size: {}]" 
+                    print("[Agent added {} new memories. Current memory_size: {}]"
                           .format(new_observations, len(task.agent.memory) if task.agent.memory_type == "basic" else task.agent.memory.length))
                     return new_observations
             else:
                 if task.agent.memory.length == task.agent.memory_size:
-                    print("[Agent added {} new memories. Current memory_size: {}]" 
+                    print("[Agent added {} new memories. Current memory_size: {}]"
                           .format(new_observations, len(task.agent.memory) if task.agent.memory_type == "basic" else task.agent.memory.length))
                     return new_observations
 

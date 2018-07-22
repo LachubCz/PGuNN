@@ -215,7 +215,7 @@ class Agent:
             ns_model_pred = self.model_net.predict(next_state)
         else:"""
         possible_actions_curr = []
-        if self.args.environment == "2048-v0": 
+        if self.args.environment == "2048-v0":
             for i, item in enumerate(state):
                 possible_actions_curr.append(possible_moves(item))
 
@@ -268,7 +268,7 @@ class Agent:
             ns_model_pred = self.model_net.predict(next_state)
         else:"""
         possible_actions_curr = []
-        if self.args.environment == "2048-v0": 
+        if self.args.environment == "2048-v0":
             for i, item in enumerate(state):
                 possible_actions_curr.append(possible_moves(item))
 
@@ -322,7 +322,7 @@ class Agent:
             ns_target_pred = self.target_net.predict(next_state)
         else:"""
         possible_actions_curr = []
-        if self.args.environment == "2048-v0": 
+        if self.args.environment == "2048-v0":
             for i, item in enumerate(state):
                 possible_actions_curr.append(possible_moves(item))
 
