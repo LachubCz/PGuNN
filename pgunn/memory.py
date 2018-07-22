@@ -68,10 +68,10 @@ class Memory:
         method adds new observation (memory) into replay memory
         """
         self.observation_tree[self.nw_elem_idx] = observation
-        
+
         priority = self.get_priority(obs_error)
         index = self.nw_elem_idx + self.capacity - 1
-        
+
         difference = priority - self.priority_tree[index]
         self.priority_tree[index] = priority
 
@@ -79,7 +79,7 @@ class Memory:
 
         if self.length != self.capacity:
             self.length = self.length + 1
-        
+
         self.nw_elem_idx = self.nw_elem_idx + 1
         if self.nw_elem_idx >= self.capacity:
             self.nw_elem_idx = 0

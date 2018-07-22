@@ -15,7 +15,7 @@ def split_2048(vector):
         vector = [vector]
 
     tensor = []
-    for x in range(8):
+    for _ in range(8):
         tensor.append(np.zeros((len(vector),4)))
 
     for i in range(4):
@@ -111,7 +111,7 @@ def check_direction(matrix):
         if i != 0:
             if matrix[i-1] == 0 and item != 0:
                 moves[0] = 1
-        for e, elem in enumerate(matrix[(1+i):]):
+        for _, elem in enumerate(matrix[(1+i):]):
             if item == elem and item != 0:
                 moves[0] = 1
                 moves[1] = 1
@@ -134,7 +134,7 @@ def possible_moves(matrix):
     a = 0
     s = 0
     d = 0
-    
+
     tensor = split_2048(matrix)
 
     for i, item in enumerate(tensor):
@@ -171,7 +171,7 @@ def rand_score_estimate(task, games):
 
         while not done:
             action = np.random.randint(0, task.env_action_size, size=1)[0]
-            _, reward, done, info = task.env.step(action)
+            _, reward, done, _ = task.env.step(action)
             total_reward = total_reward + reward
 
         if game != 0:

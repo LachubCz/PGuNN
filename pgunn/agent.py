@@ -6,7 +6,7 @@ import numpy as np
 from collections import deque
 from memory import Memory
 from network import Network
-from tools import split_2048, possible_moves
+from tools import possible_moves#, split_2048
 
 class Agent:
     """
@@ -276,7 +276,7 @@ class Agent:
             next_state = next_state / 16384.0 - 0.5
 
         q_value = self.model_net.predict(np.array(state))
-        ns_model_pred = self.model_net.predict(np.array(next_state))
+        ns_target_pred = self.target_net.predict(np.array(next_state))
 
         for i in range(0, self.minibatch_size):
             errors[i] = q_value[i][action[i]]

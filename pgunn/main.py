@@ -8,7 +8,6 @@ import os.path
 import argparse
 import warnings
 warnings.simplefilter('ignore', FutureWarning)
-import numpy as np
 import tensorflow as tf
 from keras.backend.tensorflow_backend import set_session
 from keras import backend as K
@@ -163,7 +162,7 @@ def train(task, normalize_score=True):
             if done:
                 if eps % task.args.save_f == 0:
                     task.agent.save_model_weights("{}-{}.h5" .format(task.name, eps))
-                
+
                 if task.type == "basic":
                     task.agent.update_target_net()
 

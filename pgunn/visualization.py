@@ -69,7 +69,7 @@ def heat_map(array, graph_name, axes):
         im.axes.get_yaxis().set_visible(False)
         im.axes.get_xaxis().set_visible(False)
     fig.tight_layout()
-    
+
     graph_name = get_name(graph_name)
     plt.savefig("./{}" .format(graph_name), bbox_inches='tight')
     print("[Heatmap was made.]")

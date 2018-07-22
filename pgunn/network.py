@@ -1,7 +1,6 @@
 """
 file contains implementation of several neural network models
 """
-import numpy as np
 import tensorflow as tf
 from keras.models import Model
 from keras.layers import Input, Conv2D, Flatten, Dense, Concatenate, Lambda, Subtract, Add
