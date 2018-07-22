@@ -12,7 +12,8 @@ class Agent:
     """
     class implements agent
     """
-    def __init__(self, algorithm, state_size, action_size, model_type, memory_type, net_units=None):
+    def __init__(self, algorithm, state_size, action_size, model_type, memory_type, args, net_units=None):
+        self.args = args
         self.initial_epsilon = 1
         self.final_epsilon = 0.1
         self.current_epsilon = self.initial_epsilon
@@ -23,7 +24,7 @@ class Agent:
         self.fraction_update = 0.125
 
         self.memory_type = memory_type
-        self.memory_size = 250000
+        self.memory_size = 2500
         if self.memory_type == "basic":
             self.memory = deque(maxlen=self.memory_size)
         else:
@@ -61,7 +62,6 @@ class Agent:
                            "DQN+TN" : self.train_target_dqn,
                            "DDQN" : self.train_ddqn,
                           }
-        self.name = "2048-v0"
 
     def update_target_net(self):
         """
@@ -137,9 +137,6 @@ class Agent:
         method returns action to take
         """
         if not epsilon:
-            #if task.args.network == "experimental":
-            #    q_value = self.model_net.predict(split_2048(state))
-            #else:
             q_value = self.model_net.predict(np.array([state]))
         else:
             if np.random.rand() <= self.current_epsilon:
@@ -152,9 +149,6 @@ class Agent:
                 else:
                     return np.random.randint(0, self.action_size, size=1)[0]
             else:
-                #if task.args.network == "experimental":
-                #    q_value = self.model_net.predict(split_2048(state))
-                #else:
                 q_value = self.model_net.predict(np.array([state]))
 
         if task.name == "2048-v0":
@@ -166,7 +160,7 @@ class Agent:
                 else:
                     q_value[0][chosen_action] = -100
 
-            return np.argmax(q_value)
+        return np.argmax(q_value)
 
     def get_minibatch(self):
         """
@@ -213,22 +207,23 @@ class Agent:
                 return
 
         errors = np.zeros(self.minibatch_size)
+        """
         if self.model_type == "experimental":
             state = split_2048(state)
             next_state = split_2048(next_state)
             q_value = self.model_net.predict(state)
             ns_model_pred = self.model_net.predict(next_state)
-        else:
-            possible_actions_curr = []
-            if self.name == "2048-v0": 
-                for i, item in enumerate(state):
-                    possible_actions_curr.append(possible_moves(item))
+        else:"""
+        possible_actions_curr = []
+        if self.args.environment == "2048-v0": 
+            for i, item in enumerate(state):
+                possible_actions_curr.append(possible_moves(item))
 
-                state = state / 16384.0 - 0.5
-                next_state = next_state / 16384.0 - 0.5
+            state = state / 16384.0 - 0.5
+            next_state = next_state / 16384.0 - 0.5
 
-            q_value = self.model_net.predict(np.array(state))
-            ns_model_pred = self.model_net.predict(np.array(next_state))
+        q_value = self.model_net.predict(np.array(state))
+        ns_model_pred = self.model_net.predict(np.array(next_state))
 
         for i in range(0, self.minibatch_size):
             errors[i] = q_value[i][action[i]]
@@ -265,22 +260,23 @@ class Agent:
                 return
 
         errors = np.zeros(self.minibatch_size)
+        """
         if self.model_type == "experimental":
             state = split_2048(state)
             next_state = split_2048(next_state)
             q_value = self.model_net.predict(state)
             ns_model_pred = self.model_net.predict(next_state)
-        else:
-            possible_actions_curr = []
-            if self.name == "2048-v0": 
-                for i, item in enumerate(state):
-                    possible_actions_curr.append(possible_moves(item))
+        else:"""
+        possible_actions_curr = []
+        if self.args.environment == "2048-v0": 
+            for i, item in enumerate(state):
+                possible_actions_curr.append(possible_moves(item))
 
-                state = state / 16384.0 - 0.5
-                next_state = next_state / 16384.0 - 0.5
+            state = state / 16384.0 - 0.5
+            next_state = next_state / 16384.0 - 0.5
 
-            q_value = self.model_net.predict(np.array(state))
-            ns_model_pred = self.model_net.predict(np.array(next_state))
+        q_value = self.model_net.predict(np.array(state))
+        ns_model_pred = self.model_net.predict(np.array(next_state))
 
         for i in range(0, self.minibatch_size):
             errors[i] = q_value[i][action[i]]
@@ -326,7 +322,7 @@ class Agent:
             ns_target_pred = self.target_net.predict(next_state)
         else:"""
         possible_actions_curr = []
-        if self.name == "2048-v0": 
+        if self.args.environment == "2048-v0": 
             for i, item in enumerate(state):
                 possible_actions_curr.append(possible_moves(item))
 

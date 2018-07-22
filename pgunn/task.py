@@ -7,8 +7,8 @@ from keras import backend as K
 import gym
 import gym_2048
 from agent import Agent
-from playing import Playing as pl
 from visualization import combined_graph
+from tools import agent_score_estimate
 
 class Task:
     """
@@ -53,17 +53,17 @@ class Task:
         self.average_rand_score = 22.25
         self.max_steps = 200
         self.agent = Agent(self.args.algorithm, self.env_state_size, self.env_action_size,
-                           self.args.network, self.args.memory, [32,16])
+                           self.args.network, self.args.memory, self.args, [32,16])
         self.test = self.cartp0_test
 
     def cartp0_test(self, scores, episode_numbers):
         """
         method tests CartPole-v0 solution
         """
-        complete_estimation = pl.agent_score_estimate(self, 10)
+        complete_estimation = agent_score_estimate(self, 10)
         if complete_estimation >= self.solved_score:
             for i in range(2, 11):
-                estimation = pl.agent_score_estimate(self, 10)
+                estimation = agent_score_estimate(self, 10)
                 complete_estimation = complete_estimation + estimation
                 if (complete_estimation / i) < self.solved_score:
                     return
@@ -93,17 +93,17 @@ class Task:
         self.average_rand_score = 22.25
         self.max_steps = 500
         self.agent = Agent(self.args.algorithm, self.env_state_size, self.env_action_size,
-                           self.args.network, self.args.memory, [32,16])
+                           self.args.network, self.args.memory, self.args, [32,16])
         self.test = self.cartp1_test
 
     def cartp1_test(self, scores, episode_numbers):
         """
         method tests CartPole-v1 solution
         """
-        complete_estimation = pl.agent_score_estimate(self, 10)
+        complete_estimation = agent_score_estimate(self, 10)
         if complete_estimation >= self.solved_score:
             for i in range(2, 11):
-                estimation = pl.agent_score_estimate(self, 10)
+                estimation = agent_score_estimate(self, 10)
                 complete_estimation = complete_estimation + estimation
                 if (complete_estimation / i) < self.solved_score:
                     return
@@ -133,17 +133,17 @@ class Task:
         self.average_rand_score = -200
         self.max_steps = 200
         self.agent = Agent(self.args.algorithm, self.env_state_size, self.env_action_size,
-                           self.args.network, self.args.memory, [32,16])
+                           self.args.network, self.args.memory, self.args, [32,16])
         self.test = self.mcar0_test
 
     def mcar0_test(self, scores, episode_numbers):
         """
         method tests MountainCar-v0 solution
         """
-        complete_estimation = pl.agent_score_estimate(self, 10)
+        complete_estimation = agent_score_estimate(self, 10)
         if complete_estimation >= self.solved_score:
             for i in range(2, 11):
-                estimation = pl.agent_score_estimate(self, 10)
+                estimation = agent_score_estimate(self, 10)
                 complete_estimation = complete_estimation + estimation
                 if (complete_estimation / i) < self.solved_score:
                     return
@@ -173,7 +173,7 @@ class Task:
         self.average_rand_score = -498.95
         self.max_steps = 500
         self.agent = Agent(self.args.algorithm, self.env_state_size, self.env_action_size,
-                           self.args.network, self.args.memory, [32,16])
+                           self.args.network, self.args.memory, self.args, [32,16])
         self.test = self.acro1_test
 
     def acro1_test(self, scores, episode_numbers):
@@ -181,7 +181,7 @@ class Task:
         method tests Acrobot-v1 solution
         """
         if episode_numbers[-1] == 99:
-            score = pl.agent_score_estimate(self, 100)
+            score = agent_score_estimate(self, 100)
             self.agent.save_model_weights("{}-solved.h5" .format(self.name))
             combined_graph(scores, episode_numbers, "{}_results" .format(self.name), 
                            [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
@@ -203,7 +203,7 @@ class Task:
         self.average_rand_score = 1011
         self.max_steps = 1000
         self.agent = Agent(self.args.algorithm, self.env_state_size, self.env_action_size,
-                           self.args.network, self.args.memory, [256, 256])
+                           self.args.network, self.args.memory, self.args, [256, 256])
         self.test = None
 
     def break0(self):
@@ -219,7 +219,7 @@ class Task:
         self.average_rand_score = 1.2
         self.max_steps = 10000
         self.agent = Agent(self.args.algorithm, self.env_state_size, self.env_action_size,
-                           self.args.network, self.args.memory)
+                           self.args.network, self.args.memory, self.args)
         self.test = None
 
     def space0(self):
@@ -235,7 +235,7 @@ class Task:
         self.average_rand_score = 179
         self.max_steps = 10000
         self.agent = Agent(self.args.algorithm, self.env_state_size, self.env_action_size,
-                           self.args.network, self.args.memory)
+                           self.args.network, self.args.memory, self.args)
         self.test = None
 
     def beam0(self):
@@ -251,7 +251,7 @@ class Task:
         self.average_rand_score = 354
         self.max_steps = 10000
         self.agent = Agent(self.args.algorithm, self.env_state_size, self.env_action_size,
-                           self.args.network, self.args.memory)
+                           self.args.network, self.args.memory, self.args)
         self.test = None
 
     def breakR0(self):
@@ -267,7 +267,7 @@ class Task:
         self.average_rand_score = 1.2
         self.max_steps = 10000
         self.agent = Agent(self.args.algorithm, self.env_state_size, self.env_action_size,
-                           self.args.network, self.args.memory, 512)
+                           self.args.network, self.args.memory, self.args, 512)
         self.test = None
 
     def spaceR0(self):
@@ -283,7 +283,7 @@ class Task:
         self.average_rand_score = 179
         self.max_steps = 10000
         self.agent = Agent(self.args.algorithm, self.env_state_size, self.env_action_size,
-                           self.args.network, self.args.memory, 512)
+                           self.args.network, self.args.memory, self.args, 512)
         self.test = None
 
     def beamR0(self):
@@ -299,5 +299,5 @@ class Task:
         self.average_rand_score = 354
         self.max_steps = 10000
         self.agent = Agent(self.args.algorithm, self.env_state_size, self.env_action_size,
-                           self.args.network, self.args.memory, 512)
+                           self.args.network, self.args.memory, self.args, 512)
         self.test = None

@@ -16,8 +16,7 @@ import gym.wrappers as wrappers
 
 from task import Task
 from visualization import combined_graph
-from playing import Playing as pl
-from tools import create_buffer, shift_buffer, normalize, split_2048
+from tools import create_buffer, shift_buffer, normalize, split_2048, agent_score_estimate, load_memories
 
 def err_print(*args, **kwargs):
     """
@@ -216,16 +215,7 @@ def main():
     task = Task(args)
 
     if task.args.init and task.args.model is None and task.args.mode == "train":
-        if task.agent.memory_type == "basic":
-            if task.type == "basic" or task.type == "text" or task.type == "ram":
-                pl.rand_agent_replay_fs(task)
-            elif task.type == "image":
-                pl.rand_agent_replay_ps(task)
-        else:
-            if task.type == "basic" or task.type == "text" or task.type == "ram":
-                pl.prior_rand_agent_replay_fs(task)
-            elif task.type == "image":
-                pl.prior_rand_agent_replay_ps(task)
+        load_memories(task, rnd=False)
 
     if task.args.model is not None:
         task.agent.load_model_weights("./{}" .format(task.args.model))
@@ -234,16 +224,7 @@ def main():
         task.agent.current_epsilon = 0.1
 
         if task.args.init and task.args.mode == "train":
-            if task.agent.memory_type == "basic":
-                if task.type == "basic" or task.type == "text" or task.type == "ram":
-                    pl.agent_replay_fs(task)
-                elif task.type == "image":
-                    pl.agent_replay_ps(task)
-            else:
-                if task.type == "basic" or task.type == "text" or task.type == "ram":
-                    pl.prior_agent_replay_fs(task)
-                elif task.type == "image":
-                    pl.prior_agent_replay_ps(task)
+            load_memories(task, rnd=True)
 
     if task.args.vids:
         task.env = wrappers.Monitor(task.env, "./", video_callable=lambda episode_id: episode_id%1==0, force=True)
@@ -259,10 +240,10 @@ def main():
             err_print("[Not enough values to make graph.]")
 
     elif task.args.mode == "test":
-        pl.agent_score_estimate(task, task.args.episodes, render=False, show_bar=True)
+        agent_score_estimate(task, task.args.episodes, render=False, show_bar=True)
 
     elif task.args.mode == "render":
-        pl.agent_score_estimate(task, task.args.episodes, render=True, show_bar=True)
+        agent_score_estimate(task, task.args.episodes, render=True, show_bar=True)
 
     K.clear_session()
     print("[SUCCESSFUL RUN]")
