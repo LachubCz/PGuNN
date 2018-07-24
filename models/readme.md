@@ -1,9 +1,11 @@
 # Trained Models
 
+The score from each environment depends heavily on the setting of hyperparameters, which was different for almost every environment.
+
 ## Control theory problems environments
 
 ### Score:
-Score of games CartPole-v0, CartPole-v1, MountainCar-v0 means average number of episodes needed to solve an environment
+Scores were obtained from 25 same training sessions for each variant of DQN. Score of CartPole-v0, CartPole-v1, MountainCar-v0 means average number of episodes required to solve an environment. Score of Acrobot-v1 means average score from 100 testing episodes after 100 episodes of training.
 
 |                              | CartPole-v0    | CartPole-v1  | MountainCar-v0 | Acrobot-v1   |
 |------------------------------|:--------------:|:------------:|:--------------:|:------------:|
