@@ -15,13 +15,7 @@ import gym.wrappers as wrappers
 
 from task import Task
 from visualization import combined_graph
-from tools import create_buffer, shift_buffer, normalize, agent_score_estimate, load_memories
-
-def err_print(*args, **kwargs):
-    """
-    method for printing to stderr
-    """
-    print(*args, file=sys.stderr, **kwargs)
+from tools import create_buffer, shift_buffer, normalize, agent_score_estimate, load_memories, err_print
 
 def get_args():
     """
@@ -192,10 +186,7 @@ def train(task, normalize_score=True):
 
     return task, true_scores, episodes_numbers, highest, normalized_score
 
-def main():
-    """
-    main
-    """
+if __name__ == "__main__":
     args = get_args()
 
     os.environ["TF_CPP_MIN_LOG_LEVEL"]="3"
@@ -246,6 +237,3 @@ def main():
 
     K.clear_session()
     print("[SUCCESSFUL RUN]")
-
-if __name__ == "__main__":
-    main()

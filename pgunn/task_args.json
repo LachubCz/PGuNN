@@ -60,20 +60,20 @@
         "solved_score": "31",
         "average_rand_score": "1.2",
         "max_steps": "10000",
-        "net_units": "None"
+        "net_units": ["512"]
     },
     "SpaceInvaders-ram-v0": {
         "type": "ram",
         "solved_score": "3690",
         "average_rand_score": "179",
         "max_steps": "10000",
-        "net_units": "None"
+        "net_units": ["512"]
     },
     "BeamRider-ram-v0": {
         "type": "ram",
         "solved_score": "7456",
         "average_rand_score": "354",
         "max_steps": "10000",
-        "net_units": "None"
+        "net_units": ["512"]
     }
 }

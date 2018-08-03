@@ -2,6 +2,7 @@
 file contains support methods for processing of states
 """
 import os
+import sys
 import numpy as np
 import scipy
 import scipy.misc
@@ -295,3 +296,9 @@ def load_memories(task, rnd, normalize_score=True):
 
             if done:
                 break
+
+def err_print(*args, **kwargs):
+    """
+    method for printing to stderr
+    """
+    print(*args, file=sys.stderr, **kwargs)

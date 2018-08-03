@@ -238,7 +238,7 @@ class Network:
         """
         network_input = Input(shape=(self.state_size,))
 
-        net = Dense(units=units, activation="relu", kernel_initializer="he_uniform")(network_input)
+        net = Dense(units=units[0], activation="relu", kernel_initializer="he_uniform")(network_input)
         net = Dense(units=self.action_size, activation="linear", kernel_initializer="he_uniform")(net)
 
         model = Model(inputs=network_input, outputs=net)
