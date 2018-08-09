@@ -3,6 +3,7 @@ file contains support methods for processing of states
 """
 import os
 import sys
+import time
 import numpy as np
 import scipy
 import scipy.misc
