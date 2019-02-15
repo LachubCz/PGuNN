@@ -27,7 +27,7 @@ def get_args():
                         help="init replay memory with random agent observations")
     parser.add_argument("-mem", action="store", dest="memory", choices=["basic", "prioritized"],
                         default="basic", help="type of memory")
-    parser.add_argument("-net", action="store", dest="network", choices=["basic", "dueling", "experimental"],
+    parser.add_argument("-net", action="store", dest="network", choices=["basic", "dueling"],
                         default="basic", help="type of neural network architecture")
     parser.add_argument("-alg", action="store", dest="algorithm", choices=["DQN", "DQN+TN", "DDQN"],
                         default="DQN", help="type of algorithm")
@@ -52,6 +52,8 @@ def get_args():
     parser.add_argument("-mode", action="store", dest="mode", required=True,
                         choices=["train", "test", "render"], default="train",
                         help="application mode")
+    parser.add_argument("-dont_save", action="store_true", default=False,
+                        help="application won't save single file etc. models, graphs..")
 
     args = parser.parse_args()
 

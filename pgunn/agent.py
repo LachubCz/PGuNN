@@ -51,9 +51,6 @@ class Agent:
         elif model_type == "1layer_ram_mdl":
             self.model_net = network.make_1layer_mdl(net_units)
             self.target_net = network.make_1layer_mdl(net_units)
-        elif model_type == "experimental":
-            self.model_net = network.make_4layer_mdl([128, 128, 128, 128])
-            self.target_net = network.make_4layer_mdl([128, 128, 128, 128])
 
         self.update_target_net()
 
@@ -207,13 +204,7 @@ class Agent:
                 return
 
         errors = np.zeros(self.minibatch_size)
-        """
-        if self.model_type == "experimental":
-            state = split_2048(state)
-            next_state = split_2048(next_state)
-            q_value = self.model_net.predict(state)
-            ns_model_pred = self.model_net.predict(next_state)
-        else:"""
+
         possible_actions_curr = []
         if self.args.environment == "2048-v0":
             for i, item in enumerate(state):
@@ -260,13 +251,7 @@ class Agent:
                 return
 
         errors = np.zeros(self.minibatch_size)
-        """
-        if self.model_type == "experimental":
-            state = split_2048(state)
-            next_state = split_2048(next_state)
-            q_value = self.model_net.predict(state)
-            ns_model_pred = self.model_net.predict(next_state)
-        else:"""
+
         possible_actions_curr = []
         if self.args.environment == "2048-v0":
             for i, item in enumerate(state):
@@ -313,14 +298,7 @@ class Agent:
                 return
 
         errors = np.zeros(self.minibatch_size)
-        """
-        if self.model_type == "experimental":
-            state = split_2048(state)
-            next_state = split_2048(next_state)
-            q_value = self.model_net.predict(state)
-            ns_model_pred = self.model_net.predict(next_state)
-            ns_target_pred = self.target_net.predict(next_state)
-        else:"""
+
         possible_actions_curr = []
         if self.args.environment == "2048-v0":
             for i, item in enumerate(state):
