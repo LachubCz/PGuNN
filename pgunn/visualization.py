@@ -155,9 +155,12 @@ def get_visualization(filename, graph_name, idx_val, coordinate_x=None, coordina
     """
     method reads and proceses file with learning log
     """
-    linears_dict = dict()
-    for _, item in enumerate(lines):
-        linears_dict[item] = item
+    if lines != None:
+        linears_dict = dict()
+        for _, item in enumerate(lines):
+            linears_dict[item] = item
+    else:
+        linears_dict = None
 
     values = list()
     data, counter = read_file(filename)
