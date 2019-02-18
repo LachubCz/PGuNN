@@ -48,12 +48,12 @@ def get_args():
     parser.add_argument("-save_f", action="store", dest="save_f", type=int, default=25,
                         help="frequency of saving model")
     parser.add_argument("-frames", action="store", dest="frames", type=int, default=1, choices=[1, 2, 3, 4],
-                        help="Number of frames to process as a information of state.")
+                        help="number of frames to process as a information of state.")
     parser.add_argument("-mode", action="store", dest="mode", required=True,
                         choices=["train", "test", "render"], default="train",
                         help="application mode")
     parser.add_argument("-dont_save", action="store_true", default=False,
-                        help="application won't save single file etc. models, graphs..")
+                        help="application won't save single file etc. models, graphs...")
 
     args = parser.parse_args()
 
@@ -74,22 +74,23 @@ def get_args():
         if args.environment in image:
             args.network = "duel_img_model"
         if args.environment in ram:
-            err_print("There is no dueling model for this environment.")
+            err_print("[There is no dueling model for this environment.]")
             sys.exit(-1)
 
     if args.model is not None:
         if not os.path.isfile(args.model):
-            err_print("Model file doesn't exist.")
+            err_print("[Model file doesn't exist.]")
             sys.exit(-1)
 
     if args.frames != 1 and args.environment not in image:
-        err_print("Application doesn't support buffer of states for this environment.")
+        err_print("[Application doesn't support buffer of states for this environment.]")
         sys.exit(-1)
     elif args.frames == 1 and args.environment in image:
-        err_print("Application needs buffer of states for this environment.")
+        err_print("[Application needs buffer of states for this environment.]")
         sys.exit(-1)
 
     return args
+
 
 def train(task, normalize_score=True):
     """
@@ -187,6 +188,7 @@ def train(task, normalize_score=True):
                 break
 
     return task, true_scores, episodes_numbers, highest, normalized_score
+
 
 if __name__ == "__main__":
     args = get_args()

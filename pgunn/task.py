@@ -30,6 +30,7 @@ class Task:
         self.test = None
         self.load_json()
 
+
     def load_json(self):
         """
         method loads data about environment from json
@@ -69,6 +70,7 @@ class Task:
         else:
             self.test = None
 
+
     def ohe_test(self, scores, episode_numbers):
         """
         method runs 100 testing episodes
@@ -92,6 +94,7 @@ class Task:
             print("[SUCCESSFUL RUN]")
             K.clear_session()
             sys.exit()
+
 
     def aohe_test(self, scores, episode_numbers):
         """

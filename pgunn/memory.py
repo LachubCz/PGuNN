@@ -25,6 +25,7 @@ class Memory:
         self.error_power = 0.6
         self.length = 0
 
+
     def sample(self, minibatch_size):
         """
         method returns sample of memories of size minibatch_size
@@ -39,6 +40,7 @@ class Memory:
             minibatch.append(self.get_observation(0, p))
 
         return minibatch
+
 
     def get_observation(self, index, p):
         """
@@ -55,6 +57,7 @@ class Memory:
             right = 2 * index + 2
             return self.get_observation(right, p - self.priority_tree[left])
 
+
     def get_priority(self, obs_error):
         """
         method returns priority of memory (observation) based on difference between Q-value
@@ -62,6 +65,7 @@ class Memory:
         """
         priority = (obs_error + self.basic_error) ** self.error_power
         return priority
+
 
     def add_observation(self, observation, obs_error):
         """
@@ -84,6 +88,7 @@ class Memory:
         if self.nw_elem_idx >= self.capacity:
             self.nw_elem_idx = 0
 
+
     def propagate_changes(self, index, difference):
         """
         method propagate changes in priority from bottom of the tree to its top
@@ -94,6 +99,7 @@ class Memory:
 
         if parent != 0:
             self.propagate_changes(parent, difference)
+
 
     def update_minibatch(self, minibatch, obs_errors):
         """
@@ -108,6 +114,7 @@ class Memory:
             self.priority_tree[index] = priority
 
             self.propagate_changes(index, difference)
+
 
     def clear(self):
         """

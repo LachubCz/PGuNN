@@ -60,12 +60,14 @@ class Agent:
                            "DDQN" : self.train_ddqn,
                           }
 
+
     def update_target_net(self):
         """
         method updates target network
         """
         self.target_net.set_weights(self.model_net.get_weights())
         print("[Target network was updated.]")
+
 
     def update_target_net_partially(self):
         """
@@ -79,6 +81,7 @@ class Agent:
 
         self.target_net.set_weights(weights_target)
         print("[Target network was updated by parts.]")
+
 
     def get_error(self, state, action, reward, next_state, done):
         """
@@ -99,6 +102,7 @@ class Agent:
 
         return obs_error
 
+
     def remember(self, state, action, reward, next_state, done, rand_agent):
         """
         method saves observation (experience) to experience replay memory
@@ -113,11 +117,13 @@ class Agent:
 
             self.memory.add_observation((state, action, reward, next_state, done), obs_error)
 
+
     def clear_memory(self):
         """
         method clears replay memory
         """
         self.memory.clear()
+
 
     def decrease_epsilon(self):
         """
@@ -128,6 +134,7 @@ class Agent:
                 self.current_epsilon = self.current_epsilon - self.epsilon_decay
             else:
                 self.current_epsilon = self.final_epsilon
+
 
     def get_action(self, task, state, non_normalized_state, epsilon):
         """
@@ -159,6 +166,7 @@ class Agent:
 
         return np.argmax(q_value)
 
+
     def get_minibatch(self):
         """
         method returns minibatch from diffrent memory types
@@ -181,17 +189,18 @@ class Agent:
 
         return state, action, reward, next_state, done
 
+
     def train(self):
         """
         method trains agent with selected algorithm
         """
         self.algorithms[self.algorithm]()
 
+
     def train_dqn(self):
         """
         method trains agent using DQN
         """
-        #print(self.memory)
         if self.memory_type == "basic":
             if len(self.memory) >= self.minibatch_size:
                 state, action, reward, next_state, done = self.get_minibatch()
@@ -234,6 +243,7 @@ class Agent:
         self.model_net.fit(state, q_value, epochs=1, verbose=0)
         if self.memory_type == "dueling":
             self.memory.update_minibatch(minibatch, errors)
+
 
     def train_target_dqn(self):
         """
@@ -281,6 +291,7 @@ class Agent:
         self.model_net.fit(state, q_value, epochs=1, verbose=0)
         if self.memory_type == "dueling":
             self.memory.update_minibatch(minibatch, errors)
+
 
     def train_ddqn(self):
         """
@@ -330,12 +341,14 @@ class Agent:
         if self.memory_type == "dueling":
             self.memory.update_minibatch(minibatch, errors)
 
+
     def load_model_weights(self, name):
         """
         method loads weights to primary neural network
         """
         self.model_net.load_weights(name)
         print("[Model has been loaded from \"{}\".]" .format(name))
+
 
     def save_model_weights(self, name):
         """
@@ -344,12 +357,14 @@ class Agent:
         self.model_net.save_weights("./model-{}".format(name))
         print("[Model was saved to \"./model-{}\".]" .format(name))
 
+
     def load_target_weights(self, name):
         """
         method loads weights to target neural network
         """
         self.target_net.load_weights(name)
         print("[Target model has been loaded from \"{}\".]" .format(name))
+
 
     def save_target_weights(self, name):
         """

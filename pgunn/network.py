@@ -19,6 +19,7 @@ def visualize_model(model, plot_mdl=[True, False]):
         name = get_name("model")
         plot_model(model, to_file=name, show_shapes=True, show_layer_names=False)
 
+
 def mse_mae(y_true, y_pred):
     """
     loss function, which combines MSE and MAE
@@ -32,11 +33,11 @@ def mse_mae(y_true, y_pred):
 
     return K.mean(loss)
 
+
 class Network:
     """
     class implements several neural network models
     """
-
     def __init__(self, state_size, action_size, learning_rate, loss, plot_model=[True, False]):
         self.state_size = state_size
         self.action_size = action_size
@@ -48,9 +49,10 @@ class Network:
         elif loss == "HUBER":
             self.loss = tf.losses.huber_loss
         else:
-            err_print("Model file doesn't exist.")
+            err_print("[Model file doesn't exist.]")
             sys.exit(-1)
         self.plot_model = plot_model
+
 
     def make_2layer_mdl(self, units):
         """
@@ -68,6 +70,7 @@ class Network:
         model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=['accuracy'])
 
         return model
+
 
     def make_4layer_mdl(self, units):
         """
@@ -87,6 +90,7 @@ class Network:
         model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=['accuracy'])
 
         return model
+
 
     def make_2layer_duel_mdl(self, units):
         """
@@ -119,6 +123,7 @@ class Network:
 
         return model
 
+
     def make_bsc_img_mdl(self):
         """
         method returns DeepMind's neural network model
@@ -142,6 +147,7 @@ class Network:
         model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=['accuracy'])
 
         return model
+
 
     def make_duel_img_mdl(self):
         """
@@ -180,6 +186,7 @@ class Network:
         model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=['accuracy'])
 
         return model
+
 
     def make_1layer_mdl(self, units):
         """

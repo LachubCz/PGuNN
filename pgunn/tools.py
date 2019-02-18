@@ -32,6 +32,7 @@ def split_2048(vector):
 
     return tensor
 
+
 def create_buffer(task, state):
     """
     method creates buffer
@@ -43,6 +44,7 @@ def create_buffer(task, state):
         return buff
     else:
         return state
+
 
 def shift_buffer(task, buff, new_state):
     """
@@ -58,6 +60,7 @@ def shift_buffer(task, buff, new_state):
     else:
         return new_state
 
+
 def process_img(img):
     """
     method proceses image - make it gray and normalize
@@ -71,6 +74,7 @@ def process_img(img):
 
     return img
 
+
 def normalize(task, state):
     """
     method normalizes states
@@ -83,6 +87,7 @@ def normalize(task, state):
         return process_img(state)
     else:
         return state
+
 
 def get_name(graph_name):
     """
@@ -99,6 +104,7 @@ def get_name(graph_name):
         graph_name = graph_name + ".pdf"
 
     return graph_name
+
 
 def check_direction(matrix):
     """
@@ -125,6 +131,7 @@ def check_direction(matrix):
                 break
 
     return moves[0], moves[1]
+
 
 def possible_moves(matrix):
     """
@@ -160,6 +167,7 @@ def possible_moves(matrix):
                     moves[2] = s
     return moves
 
+
 def rand_score_estimate(task, games):
     """
     score estimation for random agent
@@ -182,6 +190,7 @@ def rand_score_estimate(task, games):
     print("[Random agent average score: {}]" .format(round(total_reward / games, 2)))
 
     return total_reward / games
+
 
 def agent_score_estimate(task, games, render=False, show_bar=False):
     """
@@ -237,6 +246,7 @@ def agent_score_estimate(task, games, render=False, show_bar=False):
         print("[Agent's average score: {}]" .format(round(total_reward / games, 2)))
 
     return total_reward / games
+
 
 def load_memories(task, rnd, normalize_score=True):
     """
@@ -297,6 +307,7 @@ def load_memories(task, rnd, normalize_score=True):
 
             if done:
                 break
+
 
 def err_print(*args, **kwargs):
     """
