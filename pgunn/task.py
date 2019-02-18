@@ -56,13 +56,9 @@ class Task:
 
         if data[self.args.environment]["max_steps"] != "None":
             self.max_steps = int(data[self.args.environment]["max_steps"])
-        if data[self.args.environment]["net_units"] != "None":
-            data[self.args.environment]["net_units"] = [int(i) for i in data[self.args.environment]["net_units"]]
-        else:
-            data[self.args.environment]["net_units"] = None
 
-        self.agent = Agent(self.args.algorithm, self.env_state_size, self.env_action_size,
-                           self.args.network, self.args.memory, self.args, data[self.args.environment]["net_units"])
+        self.agent = Agent(self.env_state_size, self.env_action_size, self.args)
+
         if self.name in set(["CartPole-v0", "CartPole-v1", "MountainCar-v0"]):
             self.test = self.aohe_test
         elif self.name == "Acrobot-v1":
@@ -87,9 +83,10 @@ class Task:
         score = complete_estimation / 10
 
         if score > self.solved_score:
-            self.agent.save_model_weights("{}-solved.h5" .format(self.name))
-            combined_graph(scores, episode_numbers, "{}_results" .format(self.name),
-                           [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
+            if not self.args.dont_save:
+                self.agent.save_model_weights("{}-solved.h5" .format(self.name))
+                combined_graph(scores, episode_numbers, "{}_results" .format(self.name),
+                               [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
             print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
             print("[SUCCESSFUL RUN]")
             K.clear_session()
@@ -102,9 +99,10 @@ class Task:
         """
         if episode_numbers[-1] == 99:
             score = agent_score_estimate(self, 100)
-            self.agent.save_model_weights("{}-solved.h5" .format(self.name))
-            combined_graph(scores, episode_numbers, "{}_results" .format(self.name), 
-                           [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
+            if not self.args.dont_save:
+                self.agent.save_model_weights("{}-solved.h5" .format(self.name))
+                combined_graph(scores, episode_numbers, "{}_results" .format(self.name), 
+                               [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
             print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
             print("[SUCCESSFUL RUN]")
             K.clear_session()

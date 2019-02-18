@@ -9,17 +9,6 @@ from keras import optimizers, losses
 from keras.utils import plot_model
 from tools import get_name, err_print
 
-def visualize_model(model, plot_mdl=[True, False]):
-    """
-    method prints model to stdout and pdf
-    """
-    if plot_mdl[0]:
-        model.summary()
-    if plot_mdl[1]:
-        name = get_name("model")
-        plot_model(model, to_file=name, show_shapes=True, show_layer_names=False)
-
-
 def mse_mae(y_true, y_pred):
     """
     loss function, which combines MSE and MAE
@@ -36,9 +25,9 @@ def mse_mae(y_true, y_pred):
 
 class Network:
     """
-    class implements several neural network models
+    class implements several neural network constructor methods
     """
-    def __init__(self, state_size, action_size, learning_rate, loss, plot_model=[True, False]):
+    def __init__(self, state_size, action_size, learning_rate, loss, plot_mdl=[True, False]):
         self.state_size = state_size
         self.action_size = action_size
         self.learning_rate = learning_rate
@@ -51,7 +40,8 @@ class Network:
         else:
             err_print("[Model file doesn't exist.]")
             sys.exit(-1)
-        self.plot_model = plot_model
+        self.plot_mdl = plot_mdl
+        self.plotted = False
 
 
     def make_2layer_mdl(self, units):
@@ -66,7 +56,7 @@ class Network:
 
         model = Model(inputs=network_input, outputs=net)
 
-        visualize_model(model, self.plot_model)
+        self.visualize_model(model)
         model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=['accuracy'])
 
         return model
@@ -86,7 +76,7 @@ class Network:
 
         model = Model(inputs=network_input, outputs=net)
 
-        visualize_model(model, self.plot_model)
+        self.visualize_model(model)
         model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=['accuracy'])
 
         return model
@@ -118,7 +108,7 @@ class Network:
 
         model = Model(inputs=network_input, outputs=net)
 
-        visualize_model(model, self.plot_model)
+        self.visualize_model(model)
         model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=["accuracy"])
 
         return model
@@ -143,7 +133,7 @@ class Network:
 
         model = Model(inputs=network_input, outputs=net)
 
-        visualize_model(model, self.plot_model)
+        self.visualize_model(model)
         model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=['accuracy'])
 
         return model
@@ -182,7 +172,7 @@ class Network:
 
         model = Model(inputs=network_input, outputs=net)
 
-        visualize_model(model, self.plot_model)
+        self.visualize_model(model)
         model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=['accuracy'])
 
         return model
@@ -199,7 +189,21 @@ class Network:
 
         model = Model(inputs=network_input, outputs=net)
 
-        visualize_model(model, self.plot_model)
+        self.visualize_model(model)
         model.compile(loss=self.loss, optimizer=optimizers.Adam(lr=self.learning_rate), metrics=['accuracy'])
 
         return model
+
+
+    def visualize_model(self, model):
+        """
+        method prints model to stdout and pdf
+        """
+        if not self.plotted:
+            if self.plot_mdl[0]:
+                model.summary()
+            if self.plot_mdl[1]:
+                name = get_name("model")
+                plot_model(model, to_file=name, show_shapes=True, show_layer_names=False)
+                print("[PDF blueprint of neural network was saved.]")
+            self.plotted = True

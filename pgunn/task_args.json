@@ -3,77 +3,66 @@
         "type": "basic",
         "solved_score": "195",
         "average_rand_score": "22.25",
-        "max_steps": "200",
-        "net_units": ["32","16"]
+        "max_steps": "200"
     },
     "CartPole-v1": {
         "type": "basic",
         "solved_score": "475",
         "average_rand_score": "22.25",
-        "max_steps": "500",
-        "net_units": ["32","16"]
+        "max_steps": "500"
     },
     "MountainCar-v0": {
         "type": "basic",
         "solved_score": "-110",
         "average_rand_score": "-200",
-        "max_steps": "200",
-        "net_units": ["32","16"]
+        "max_steps": "200"
     },
     "Acrobot-v1": {
         "type": "basic",
         "solved_score": "None",
         "average_rand_score": "-498.95",
-        "max_steps": "500",
-        "net_units": ["32","16"]
+        "max_steps": "500"
     },
     "2048-v0": {
         "type": "text",
         "solved_score": "None",
         "average_rand_score": "1011",
-        "max_steps": "1000",
-        "net_units": ["256", "256"]
+        "max_steps": "1000"
     },
     "Breakout-v0": {
         "type": "image",
         "solved_score": "31",
         "average_rand_score": "1.2",
-        "max_steps": "10000",
-        "net_units": "None"
+        "max_steps": "10000"
     },
     "SpaceInvaders-v0": {
         "type": "image",
         "solved_score": "3690",
         "average_rand_score": "179",
-        "max_steps": "10000",
-        "net_units": "None"
+        "max_steps": "10000"
     },
     "BeamRider-v0": {
         "type": "image",
         "solved_score": "7456",
         "average_rand_score": "354",
-        "max_steps": "10000",
-        "net_units": "None"
+        "max_steps": "10000"
     },
     "Breakout-ram-v0": {
         "type": "ram",
         "solved_score": "31",
         "average_rand_score": "1.2",
-        "max_steps": "10000",
-        "net_units": ["512"]
+        "max_steps": "10000"
     },
     "SpaceInvaders-ram-v0": {
         "type": "ram",
         "solved_score": "3690",
         "average_rand_score": "179",
-        "max_steps": "10000",
-        "net_units": ["512"]
+        "max_steps": "10000"
     },
     "BeamRider-ram-v0": {
         "type": "ram",
         "solved_score": "7456",
         "average_rand_score": "354",
-        "max_steps": "10000",
-        "net_units": ["512"]
+        "max_steps": "10000"
     }
 }

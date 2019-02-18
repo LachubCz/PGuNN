@@ -1,30 +1,35 @@
 """
 file contains implementation of Agent class
 """
+import os, inspect
+import json
 import random
 import numpy as np
 from collections import deque
 from memory import Memory
 from network import Network
-from tools import possible_moves#, split_2048
+from tools import possible_moves
 
 class Agent:
     """
     class implements agent
     """
-    def __init__(self, algorithm, state_size, action_size, model_type, memory_type, args, net_units=None):
+    def __init__(self, state_size, action_size, args):
         self.args = args
-        self.initial_epsilon = 1
-        self.final_epsilon = 0.1
+        with open(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))) + '/agent_args.json') as f:
+            data = json.load(f)
+        self.initial_epsilon = int(data[self.args.environment]["initial_epsilon"])
+        self.final_epsilon = float(data[self.args.environment]["final_epsilon"])
         self.current_epsilon = self.initial_epsilon
-        self.epsilon_decay = 0.0000009
-        self.gamma = 0.99
-        self.minibatch_size = 128
-        self.learning_rate = 0.0005
-        self.fraction_update = 0.125
+        self.epsilon_decay = float(data[self.args.environment]["epsilon_decay"])
+        self.gamma = float(data[self.args.environment]["gamma"])
+        self.minibatch_size = int(data[self.args.environment]["minibatch_size"])
+        self.learning_rate = float(data[self.args.environment]["learning_rate"])
+        self.fraction_update = float(data[self.args.environment]["fraction_update"])
+        self.loss = data[self.args.environment]["loss"]
 
-        self.memory_type = memory_type
-        self.memory_size = 2500
+        self.memory_type = self.args.memory
+        self.memory_size = int(data[self.args.environment]["memory_size"])
         if self.memory_type == "basic":
             self.memory = deque(maxlen=self.memory_size)
         else:
@@ -32,29 +37,35 @@ class Agent:
 
         self.action_size = action_size
         self.state_size = state_size
+        if self.args.mdl_blueprint and not self.args.dont_save:
+            self.mdl_blueprint = True
+        else:
+            self.mdl_blueprint = False
+        network = Network(state_size, action_size, self.learning_rate, self.loss, [True, self.mdl_blueprint])
 
-        network = Network(state_size, action_size, self.learning_rate, "MSE", [True, False])
-
-        self.model_type = model_type
-        if model_type == "2layer_bsc_mdl":
-            self.model_net = network.make_2layer_mdl(net_units)
-            self.target_net = network.make_2layer_mdl(net_units)
-        elif model_type == "2layer_duel_mdl":
-            self.model_net = network.make_2layer_duel_mdl(net_units)
-            self.target_net = network.make_2layer_duel_mdl(net_units)
-        elif model_type == "bsc_img_mdl":
+        self.net_units = None
+        if data[self.args.environment]["net_units"] != "None":
+            self.net_units = [int(i) for i in data[self.args.environment]["net_units"]]
+        self.model_type = self.args.network
+        if self.model_type == "2layer_bsc_mdl":
+            self.model_net = network.make_2layer_mdl(self.net_units)
+            self.target_net = network.make_2layer_mdl(self.net_units)
+        elif self.model_type == "2layer_duel_mdl":
+            self.model_net = network.make_2layer_duel_mdl(self.net_units)
+            self.target_net = network.make_2layer_duel_mdl(self.net_units)
+        elif self.model_type == "bsc_img_mdl":
             self.model_net = network.make_bsc_img_mdl()
             self.target_net = network.make_bsc_img_mdl()
-        elif model_type == "duel_img_model":
+        elif self.model_type == "duel_img_model":
             self.model_net = network.make_duel_img_mdl()
             self.target_net = network.make_duel_img_mdl()
-        elif model_type == "1layer_ram_mdl":
-            self.model_net = network.make_1layer_mdl(net_units)
-            self.target_net = network.make_1layer_mdl(net_units)
+        elif self.model_type == "1layer_ram_mdl":
+            self.model_net = network.make_1layer_mdl(self.net_units)
+            self.target_net = network.make_1layer_mdl(self.net_units)
 
         self.update_target_net()
 
-        self.algorithm = algorithm
+        self.algorithm = self.args.algorithm
         self.algorithms = {"DQN" : self.train_dqn,
                            "DQN+TN" : self.train_target_dqn,
                            "DDQN" : self.train_ddqn,

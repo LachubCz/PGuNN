@@ -23,7 +23,7 @@ def get_args():
     """
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-init", action="store_true", default=False,
+    parser.add_argument("-init", action="store_true", dest="init", default=False,
                         help="init replay memory with random agent observations")
     parser.add_argument("-mem", action="store", dest="memory", choices=["basic", "prioritized"],
                         default="basic", help="type of memory")
@@ -41,7 +41,7 @@ def get_args():
     parser.add_argument("-mdl", action="store", dest="model", help="name of file which contains already trained model to load")
     parser.add_argument("-pu", action="store", dest="process_unit", choices=["CPU", "GPU"], default="CPU",
                         help="script will run on this processing unit")
-    parser.add_argument("-vids", action="store_true", default=False,
+    parser.add_argument("-vids", action="store_true", dest="vids", default=False,
                         help="script will record videos using gym.wrappers")
     parser.add_argument("-update_f", action="store", dest="update_f", type=int, default=10000,
                         help="frequency of updating target net")
@@ -52,7 +52,9 @@ def get_args():
     parser.add_argument("-mode", action="store", dest="mode", required=True,
                         choices=["train", "test", "render"], default="train",
                         help="application mode")
-    parser.add_argument("-dont_save", action="store_true", default=False,
+    parser.add_argument("-mdl_blueprint", action="store_true", dest="mdl_blueprint", default=False,
+                        help="application will save pdf file with blueprint of neural network")
+    parser.add_argument("-dont_save", action="store_true", dest="dont_save", default=False,
                         help="application won't save single file etc. models, graphs...")
 
     args = parser.parse_args()
@@ -157,7 +159,7 @@ def train(task, normalize_score=True):
                 task.agent.update_target_net()
 
             if done:
-                if eps % task.args.save_f == 0:
+                if eps % task.args.save_f == 0 and not task.args.dont_save:
                     task.agent.save_model_weights("{}-{}.h5" .format(task.name, eps))
 
                 if task.type == "basic":
@@ -225,13 +227,14 @@ if __name__ == "__main__":
 
     if task.args.mode == "train":
         task, true_scores, episodes_numbers, _, normalized_scores = train(task, True)
-        task.agent.save_model_weights("{}-last.h5" .format(task.name))
-        task.agent.save_target_weights("{}-last.h5" .format(task.name))
-        try:
-            combined_graph(true_scores, episodes_numbers, "{}_results" .format(task.name), [episodes_numbers[-1]+10,max(true_scores)+10],
-                           {task.average_rand_score:task.average_rand_score}, True)
-        except ValueError:
-            err_print("[Not enough values to make graph.]")
+        if not task.args.dont_save:
+            task.agent.save_model_weights("{}-last.h5" .format(task.name))
+            task.agent.save_target_weights("{}-last.h5" .format(task.name))
+            try:
+                combined_graph(true_scores, episodes_numbers, "{}_results" .format(task.name), [episodes_numbers[-1]+10,max(true_scores)+10],
+                               {task.average_rand_score:task.average_rand_score}, True)
+            except ValueError:
+                err_print("[Not enough values to make graph.]")
 
     elif task.args.mode == "test":
         agent_score_estimate(task, task.args.episodes, render=False, show_bar=True)
