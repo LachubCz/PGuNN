@@ -71,11 +71,11 @@ def combined_graph(scores, episode_numbers, name, coordinates=None, linears=None
             plt.plot([0, episode_numbers[-1]], [key, value], 'k-', linewidth=0.8)
 
     if scatter:
-        plt.plot(episode_numbers, scores, 'ro', markersize=1)
+        plt.plot(episode_numbers, scores, 'ro', color='goldenrod', markersize=1)
 
     score_gf = gaussian_filter(scores, sigma=0.01791*episode_numbers[-1])
 
-    plt.plot(episode_numbers, score_gf, linewidth=1)
+    plt.plot(episode_numbers, score_gf, color='teal', linewidth=1)
 
     plt.ylabel("Score")
     plt.xlabel("Episode")
@@ -174,6 +174,7 @@ def get_visualization(filename, graph_name, idx_val, coordinate_x=None, coordina
         coordinate_y = max(values)+10
 
     combined_graph(values, counter, graph_name, [coordinate_x, coordinate_y], linears_dict, scatter)
+    print("[SUCCESSFUL RUN]")
 
 
 if __name__ == "__main__":

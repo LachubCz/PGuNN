@@ -80,9 +80,9 @@ def normalize(task, state):
     method normalizes states
     """
     if task.type == "text":
-        return state / 16384.0 - 0.5
+        return state / 16384.0
     elif task.type == "ram":
-        return state / 255.0 - 0.5
+        return state / 255.0
     elif task.type == "image":
         return process_img(state)
     else:
@@ -221,7 +221,7 @@ def agent_score_estimate(task, games, render=False, show_bar=False):
                 wrong_move = False
             else:
                 if task.name == "Breakout-v0" or task.name == "Breakout-ram-v0" or task.name == "BeamRider-v0":
-                    action = task.agent.get_action(state, epsilon=True)
+                    action = task.agent.get_action(task, state, last_state, epsilon=True)
                 else:
                     actions = task.agent.model_net.predict(np.array([state]))
                     action = np.argmax(actions)
@@ -281,16 +281,15 @@ def load_memories(task, rnd, normalize_score=True):
                 if done:
                     reward = -100.0
 
-            new_state = next_state
-            last_state = next_state
-            next_state = normalize(task, next_state)
-            next_state = shift_buffer(task, state, next_state)
-
             if task.name == "2048-v0":
-                task.agent.remember(last_state, action, reward, new_state, done, rand_agent=False)
+                task.agent.remember(last_state, action, reward, next_state, done, rand_agent=False)
             else:
                 task.agent.remember(state, action, reward, next_state, done, rand_agent=False)
             new_observations = new_observations + 1
+
+            last_state = next_state
+            next_state = normalize(task, next_state)
+            next_state = shift_buffer(task, state, next_state)
 
             state = next_state
 
