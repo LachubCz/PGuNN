@@ -5,7 +5,7 @@ import subprocess
 
 class TestAppRuns(unittest.TestCase):
     def test_train_cct_env_01(self):
-        output = subprocess.check_output("python3 pgunn/main.py -mode train -env CartPole-v1 -eps 2 -init -net dueling -vids", shell=True)
+        output = subprocess.check_output("python3 pgunn/main.py -mode train -env CartPole-v1 -eps 2 -init -net dueling", shell=True)
         rgx = re.compile(r'''\[SUCCESSFUL\sRUN\]''', re.X)
         self.assertTrue(rgx.search(str(output)))
 
@@ -29,7 +29,7 @@ class TestAppRuns(unittest.TestCase):
 
 
     def test_train_cct_env_02(self):
-        output = subprocess.check_output("python3 pgunn/main.py -mode train -env CartPole-v0 -eps 2 -init -mem prioritized -vids", shell=True)
+        output = subprocess.check_output("python3 pgunn/main.py -mode train -env CartPole-v0 -eps 2 -init -mem prioritized", shell=True)
         rgx = re.compile(r'''\[SUCCESSFUL\sRUN\]''', re.X)
         self.assertTrue(rgx.search(str(output)))
 
