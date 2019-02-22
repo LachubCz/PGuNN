@@ -123,5 +123,41 @@ class TestAppRuns(unittest.TestCase):
         self.assertTrue(rgx.search(str(output)))
 
 
+    def test_visualization_01(self):
+        if os.path.isfile("./model-CartPole-v1-last.h5"):
+            subprocess.Popen("rm model-CartPole-v1-last.h5", shell=True)
+        subprocess.Popen("python3 pgunn/main.py -mode train -env CartPole-v1 -eps 100 > log.out", shell=True)
+        while True:
+            if os.path.isfile("./model-CartPole-v1-last.h5"):
+                break
+        output = subprocess.check_output("python3 pgunn/visualization.py -filename log.out -graph_name score -idx_val 6", shell=True)
+        rgx = re.compile(r'''\[SUCCESSFUL\sRUN\]''', re.X)
+        self.assertTrue(rgx.search(str(output)))
+
+
+    def test_visualization_02(self):
+        if os.path.isfile("./model-CartPole-v1-last.h5"):
+            subprocess.Popen("rm model-CartPole-v1-last.h5", shell=True)
+        subprocess.Popen("python3 pgunn/main.py -mode train -env CartPole-v1 -eps 100 > log.out", shell=True)
+        while True:
+            if os.path.isfile("./model-CartPole-v1-last.h5"):
+                break
+        output = subprocess.check_output("python3 pgunn/visualization.py -filename log.out -graph_name results -idx_val 6 -lines 22 30 -scatter", shell=True)
+        rgx = re.compile(r'''\[SUCCESSFUL\sRUN\]''', re.X)
+        self.assertTrue(rgx.search(str(output)))
+
+
+    def test_visualization_03(self):
+        if os.path.isfile("./model-CartPole-v1-last.h5"):
+            subprocess.Popen("rm model-CartPole-v1-last.h5", shell=True)
+        subprocess.Popen("python3 pgunn/main.py -mode train -env CartPole-v1 -eps 100 > log.out", shell=True)
+        while True:
+            if os.path.isfile("./model-CartPole-v1-last.h5"):
+                break
+        output = subprocess.check_output("python3 pgunn/visualization.py -filename log.out -graph_name moves -idx_val 4 -coordinate_x 50", shell=True)
+        rgx = re.compile(r'''\[SUCCESSFUL\sRUN\]''', re.X)
+        self.assertTrue(rgx.search(str(output)))
+
+
 if __name__ == "__main__":
     unittest.main()
