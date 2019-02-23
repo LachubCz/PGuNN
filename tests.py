@@ -167,4 +167,18 @@ class TestAppRuns(unittest.TestCase):
 
 
 if __name__ == "__main__":
+    with open('agent_args.json', 'r') as file:
+        data = file.readlines()
+
+    data[58]  = '        \"memory_size\": \"1000\",'
+    data[70]  = '        \"memory_size\": \"1000\",'
+    data[82]  = '        \"memory_size\": \"1000\",'
+    data[94]  = '        \"memory_size\": \"1000\",'
+    data[106] = '        \"memory_size\": \"1000\",'
+    data[118] = '        \"memory_size\": \"1000\",'
+    data[130] = '        \"memory_size\": \"1000\",'
+
+    with open('agent_args.json', 'w') as file:
+        file.writelines(data)
+
     unittest.main()
