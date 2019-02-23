@@ -142,12 +142,13 @@ def train(task, normalize_score=True):
 
             if task.name == "2048-v0":
                 task.agent.remember(last_state, action, reward, next_state, done, rand_agent=False)
+                last_state = next_state
+                next_state = normalize(task, next_state)
             else:
+                last_state = next_state
+                next_state = normalize(task, next_state)
+                next_state = shift_buffer(task, state, next_state)
                 task.agent.remember(state, action, reward, next_state, done, rand_agent=False)
-
-            last_state = next_state
-            next_state = normalize(task, next_state)
-            next_state = shift_buffer(task, state, next_state)
 
             task.agent.train()
 

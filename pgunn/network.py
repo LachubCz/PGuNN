@@ -162,7 +162,7 @@ class Network:
         avg_action = Lambda(lambda x: K.mean(x, axis=1, keepdims=True))(action_values)
         concat_avg_action = Concatenate(axis=-1)([avg_action, avg_action])
 
-        for _ in range(action_size-2):
+        for _ in range(self.action_size-2):
             value_function = Concatenate(axis=-1)([value_function, state_value])
             concat_avg_action = Concatenate(axis=-1)([concat_avg_action, avg_action])
 
