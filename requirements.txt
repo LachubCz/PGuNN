@@ -6,3 +6,5 @@ Keras==2.1.4
 gym==0.9.7
 h5py==2.7.1
 tqdm==4.23.3
+pydot==1.2.4
+graphviz==0.8.2

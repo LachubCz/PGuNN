@@ -11,7 +11,7 @@ class TestAppRuns(unittest.TestCase):
 
 
     def test_train_ram_atari_env_01(self):
-        output = subprocess.check_output("python3 pgunn/main.py -mode train -env BeamRider-ram-v0 -eps 2 -init -net dueling", shell=True)
+        output = subprocess.check_output("python3 pgunn/main.py -mode train -env BeamRider-ram-v0 -eps 2 -init", shell=True)
         rgx = re.compile(r'''\[SUCCESSFUL\sRUN\]''', re.X)
         self.assertTrue(rgx.search(str(output)))
 
