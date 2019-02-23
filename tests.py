@@ -170,13 +170,13 @@ if __name__ == "__main__":
     with open('./pgunn/agent_args.json', 'r') as file:
         data = file.readlines()
 
-    data[58]  = '        \"memory_size\": \"1000\",'
-    data[70]  = '        \"memory_size\": \"1000\",'
-    data[82]  = '        \"memory_size\": \"1000\",'
-    data[94]  = '        \"memory_size\": \"1000\",'
-    data[106] = '        \"memory_size\": \"1000\",'
-    data[118] = '        \"memory_size\": \"1000\",'
-    data[130] = '        \"memory_size\": \"1000\",'
+    data[57]  = '        \"memory_size\": \"1000\",'
+    data[69]  = '        \"memory_size\": \"1000\",'
+    data[81]  = '        \"memory_size\": \"1000\",'
+    data[93]  = '        \"memory_size\": \"1000\",'
+    data[105] = '        \"memory_size\": \"1000\",'
+    data[117] = '        \"memory_size\": \"1000\",'
+    data[129] = '        \"memory_size\": \"1000\",'
 
     with open('./pgunn/agent_args.json', 'w') as file:
         file.writelines(data)
