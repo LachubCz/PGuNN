@@ -167,7 +167,7 @@ class TestAppRuns(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    with open('agent_args.json', 'r') as file:
+    with open('./pgunn/agent_args.json', 'r') as file:
         data = file.readlines()
 
     data[58]  = '        \"memory_size\": \"1000\",'
@@ -178,7 +178,7 @@ if __name__ == "__main__":
     data[118] = '        \"memory_size\": \"1000\",'
     data[130] = '        \"memory_size\": \"1000\",'
 
-    with open('agent_args.json', 'w') as file:
+    with open('./pgunn/agent_args.json', 'w') as file:
         file.writelines(data)
 
     unittest.main()
