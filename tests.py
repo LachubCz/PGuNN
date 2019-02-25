@@ -83,13 +83,13 @@ class TestAppRuns(unittest.TestCase):
 
 
     def test_train_ram_atari_env_04(self):
-        output = subprocess.check_output("python3 pgunn/main.py -mode train -env Breakout-ram-v0 -eps 2 -init -alg DDQN -mdl_blueprint -save_f 2", shell=True)
+        output = subprocess.check_output("python3 pgunn/main.py -mode train -env Breakout-ram-v0 -eps 2 -init -alg DDQN -save_f 2", shell=True)
         rgx = re.compile(r'''\[SUCCESSFUL\sRUN\]''', re.X)
         self.assertTrue(rgx.search(str(output)))
 
 
     def test_train_img_atari_env_04(self):
-        output = subprocess.check_output("python3 pgunn/main.py -mode train -env Breakout-v0 -frames 2 -eps 2 -init -alg DDQN -mdl_blueprint -save_f 2", shell=True)
+        output = subprocess.check_output("python3 pgunn/main.py -mode train -env Breakout-v0 -frames 2 -eps 2 -init -alg DDQN -save_f 2", shell=True)
         rgx = re.compile(r'''\[SUCCESSFUL\sRUN\]''', re.X)
         self.assertTrue(rgx.search(str(output)))
 
