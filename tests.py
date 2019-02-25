@@ -125,42 +125,18 @@ class TestAppRuns(unittest.TestCase):
 
 
     def test_visualization_01(self):
-        if os.path.isfile("./model-CartPole-v1-last.h5"):
-            subprocess.Popen("rm model-CartPole-v1-last.h5", shell=True)
-        if os.path.isfile("./model-CartPole-v1-solved.h5"):
-            subprocess.Popen("rm model-CartPole-v1-solved.h5", shell=True)
-        subprocess.Popen("python3 pgunn/main.py -mode train -env CartPole-v1 -eps 100 > log.out", shell=True)
-        while True:
-            if os.path.isfile("./model-CartPole-v1-last.h5") or os.path.isfile("./model-CartPole-v1-solved.h5"):
-                break
         output = subprocess.check_output("python3 pgunn/visualization.py -filename log.out -graph_name score -idx_val 6", shell=True)
         rgx = re.compile(r'''\[SUCCESSFUL\sRUN\]''', re.X)
         self.assertTrue(rgx.search(str(output)))
 
 
     def test_visualization_02(self):
-        if os.path.isfile("./model-CartPole-v1-last.h5"):
-            subprocess.Popen("rm model-CartPole-v1-last.h5", shell=True)
-        if os.path.isfile("./model-CartPole-v1-solved.h5"):
-            subprocess.Popen("rm model-CartPole-v1-solved.h5", shell=True)
-        subprocess.Popen("python3 pgunn/main.py -mode train -env CartPole-v1 -eps 100 > log.out", shell=True)
-        while True:
-            if os.path.isfile("./model-CartPole-v1-last.h5") or os.path.isfile("./model-CartPole-v1-solved.h5"):
-                break
         output = subprocess.check_output("python3 pgunn/visualization.py -filename log.out -graph_name results -idx_val 6 -lines 22 30 -scatter", shell=True)
         rgx = re.compile(r'''\[SUCCESSFUL\sRUN\]''', re.X)
         self.assertTrue(rgx.search(str(output)))
 
 
     def test_visualization_03(self):
-        if os.path.isfile("./model-CartPole-v1-last.h5"):
-            subprocess.Popen("rm model-CartPole-v1-last.h5", shell=True)
-        if os.path.isfile("./model-CartPole-v1-solved.h5"):
-            subprocess.Popen("rm model-CartPole-v1-solved.h5", shell=True)
-        subprocess.Popen("python3 pgunn/main.py -mode train -env CartPole-v1 -eps 100 > log.out", shell=True)
-        while True:
-            if os.path.isfile("./model-CartPole-v1-last.h5") or os.path.isfile("./model-CartPole-v1-solved.h5"):
-                break
         output = subprocess.check_output("python3 pgunn/visualization.py -filename log.out -graph_name moves -idx_val 4 -coordinate_x 50", shell=True)
         rgx = re.compile(r'''\[SUCCESSFUL\sRUN\]''', re.X)
         self.assertTrue(rgx.search(str(output)))
@@ -170,13 +146,13 @@ if __name__ == "__main__":
     with open('./pgunn/agent_args.json', 'r') as file:
         data = file.readlines()
 
-    data[57]  = '        \"memory_size\": \"100\",'
-    data[69]  = '        \"memory_size\": \"100\",'
-    data[81]  = '        \"memory_size\": \"100\",'
-    data[93]  = '        \"memory_size\": \"100\",'
-    data[105] = '        \"memory_size\": \"100\",'
-    data[117] = '        \"memory_size\": \"100\",'
-    data[129] = '        \"memory_size\": \"100\",'
+    data[57]  = '        \"memory_size\": \"100\",\n'
+    data[69]  = '        \"memory_size\": \"100\",\n'
+    data[81]  = '        \"memory_size\": \"100\",\n'
+    data[93]  = '        \"memory_size\": \"100\",\n'
+    data[105] = '        \"memory_size\": \"100\",\n'
+    data[117] = '        \"memory_size\": \"100\",\n'
+    data[129] = '        \"memory_size\": \"100\",\n'
 
     with open('./pgunn/agent_args.json', 'w') as file:
         file.writelines(data)
