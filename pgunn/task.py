@@ -60,7 +60,7 @@ class Task:
         self.agent = Agent(self.env_state_size, self.env_action_size, self.args)
 
         if self.name in set(["CartPole-v0", "CartPole-v1", "MountainCar-v0"]):
-            self.test = self.aohe_test
+            self.test = self.ohe_test
         elif self.name == "Acrobot-v1":
             self.test = self.aohe_test
         else:
@@ -87,7 +87,10 @@ class Task:
                 self.agent.save_model_weights("{}-solved.h5" .format(self.name))
                 combined_graph(scores, episode_numbers, "{}_results" .format(self.name),
                                [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
-            print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
+            if self.solved_score <= score:
+                print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
+            else:
+                print("[Task wasn't solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
             print("[SUCCESSFUL RUN]")
             K.clear_session()
             sys.exit()
@@ -103,7 +106,10 @@ class Task:
                 self.agent.save_model_weights("{}-solved.h5" .format(self.name))
                 combined_graph(scores, episode_numbers, "{}_results" .format(self.name), 
                                [episode_numbers[-1], max(scores)+10], {self.average_rand_score:self.average_rand_score}, scatter=True)
-            print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
+            if self.solved_score <= score:
+                print("[Task was solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
+            else:
+                print("[Task wasn't solved after {} episodes with score {}.]" .format(episode_numbers[-1], score))
             print("[SUCCESSFUL RUN]")
             K.clear_session()
             sys.exit()
